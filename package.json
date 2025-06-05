@@ -1,0 +1,13 @@
+{
+  "name": "rails_api_with_auth",
+  "engines": {
+    "node": "20.10.0",
+    "npm": "10.6.0"
+  },
+  "scripts": {
+    "clean": "rm -rf public",
+    "build": "cd frontend && npm install && npm run build",
+    "deploy": "cp -a frontend/dist/. public/",
+    "heroku-postbuild": "npm run clean && npm run build && npm run deploy && echo 'Frontend built!'"
+  }
+}

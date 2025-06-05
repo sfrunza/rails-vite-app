@@ -1,0 +1,53 @@
+class Api::V1::SessionsController < ApplicationController
+  allow_unauthenticated_access only: %i[create]
+  rate_limit to: 10,
+             within: 3.minutes,
+             only: :create,
+             with: -> do
+               render json: {
+                        error: "Too many attempts. Try again later."
+                      },
+                      status: :too_many_requests
+             end
+
+  def create
+    user = User.find_by(email_address: params[:email_address])
+
+    if user&.authenticate(params[:password])
+      if user.active?
+        start_new_session_for(user)
+        render json: {
+                 token: @auth_token,
+                 user:
+                   user.as_json(
+                     only: %i[id first_name last_name email_address role]
+                   )
+               },
+               status: :created
+      else
+        render json: { error: "Account is not active" }, status: :forbidden
+      end
+    else
+      render json: { error: "Invalid credentials" }, status: :unauthorized
+    end
+  end
+
+  def show
+    if Current.session
+      render json: {
+               user:
+                 Current.session.user.as_json(
+                   only: %i[id first_name last_name email_address role]
+                 )
+             },
+             status: :ok
+    else
+      head :no_content
+    end
+  end
+
+  def destroy
+    terminate_session
+    render json: { message: "Logged out successfully" }, status: :ok
+  end
+end
