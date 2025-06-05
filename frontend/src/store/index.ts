@@ -9,6 +9,9 @@ import { authApi } from "@/services/auth-api";
 import { rtkQueryErrorLogger } from "@/services/base-service";
 import { usersApi } from "@/services/users-api";
 import { servicesApi } from "@/services/services-api";
+import { calendarRatesApi } from "@/services/calendar-rates-api";
+import { ratesApi } from "@/services/rates-api";
+import { extraServicesApi } from "@/services/extra-services-api";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +19,9 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [servicesApi.reducerPath]: servicesApi.reducer,
+    [ratesApi.reducerPath]: ratesApi.reducer,
+    [calendarRatesApi.reducerPath]: calendarRatesApi.reducer,
+    [extraServicesApi.reducerPath]: extraServicesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -23,6 +29,9 @@ export const store = configureStore({
       authApi.middleware,
       usersApi.middleware,
       servicesApi.middleware,
+      ratesApi.middleware,
+      calendarRatesApi.middleware,
+      extraServicesApi.middleware,
     ),
 });
 

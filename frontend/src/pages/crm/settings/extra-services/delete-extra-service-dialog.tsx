@@ -11,34 +11,38 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { handleApiError } from '@/lib/utils';
-import { useDeleteServiceMutation } from '@/services/services-api';
-import type { Service } from '@/types/service';
+import { useDeleteExtraServiceMutation } from '@/services/extra-services-api';
+import type { ExtraService } from '@/types/extra-service';
 import { Trash2Icon } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-type DeleteServiceDialogProps = {
-  service: Service;
+type DeleteExtraServiceDialogProps = {
+  extraService: ExtraService;
 };
 
-export default function DeleteServiceDialog({
-  service,
-}: DeleteServiceDialogProps) {
+export default function DeleteExtraServiceDialog({
+  extraService,
+}: DeleteExtraServiceDialogProps) {
   const [open, setOpen] = useState(false);
-  const [deleteService, { isLoading: isDeleting }] = useDeleteServiceMutation();
+  const [deleteExtraService, { isLoading: isDeleting }] =
+    useDeleteExtraServiceMutation();
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button variant="ghost" size="icon" className="hover:text-destructive">
+        <Button
+          variant="outline"
+          size="icon"
+          className="hover:text-destructive"
+        >
           <Trash2Icon />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete moving service?</AlertDialogTitle>
+          <AlertDialogTitle>Delete extra service?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will delete <b>{service.name}.</b> Services that have already
-            been used cannot be deleted.
+            This will delete <b>{extraService.name}.</b>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -47,12 +51,13 @@ export default function DeleteServiceDialog({
             type="button"
             loading={isDeleting}
             disabled={isDeleting}
+            className="mt-2 sm:mt-0"
             variant="destructive"
             onClick={() => {
-              deleteService({ id: service.id! })
+              deleteExtraService({ id: extraService.id! })
                 .unwrap()
                 .then(() => {
-                  toast.success('Moving service deleted');
+                  toast.success('Extra service deleted');
                   setOpen(false);
                 })
                 .catch((error) => {

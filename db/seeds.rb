@@ -2,10 +2,10 @@ puts "Deleting old records..."
 
 # Request.delete_all
 Service.delete_all
-# Packing.delete_all
+Packing.delete_all
 # CalendarRate.delete_all
-# Rate.delete_all
-# Truck.delete_all
+Rate.delete_all
+Truck.delete_all
 Session.delete_all
 User.delete_all
 
@@ -183,39 +183,39 @@ Service.create!(
   is_default: true
 )
 
-# Rate.create(name: "Discount", color: "#00a455", enable: true)
-# Rate.create(name: "Regular", color: "#0044ff", enable: true)
-# Rate.create(name: "Subpeak", color: "#ffa500", enable: true)
-# Rate.create(name: "Peak", color: "#ff5400", enable: true)
-# Rate.create(name: "High Peak", color: "#fb0009", enable: true)
+Rate.create(name: "Discount", color: "#00a455", enable: true)
+Rate.create(name: "Regular", color: "#0044ff", enable: true)
+Rate.create(name: "Subpeak", color: "#ffa500", enable: true)
+Rate.create(name: "Peak", color: "#ff5400", enable: true)
+Rate.create(name: "High Peak", color: "#fb0009", enable: true)
 
-# Truck.create(name: "18 FT")
-# Truck.create(name: "20 FT")
-# Truck.create(name: "26 FT")
+Truck.create(name: "18 FT")
+Truck.create(name: "20 FT")
+Truck.create(name: "26 FT")
 
-# Packing.create(
-#   name: "I will pack by myself",
-#   description: "This is some description.",
-#   is_default: true,
-#   labor_increase: 0,
-#   index: 0
-# )
+Packing.create(
+  name: "I will pack by myself",
+  description: "This is some description.",
+  is_default: true,
+  labor_increase: 0,
+  index: 0
+)
 
-# Packing.create(
-#   name: "I need Partial Packing Help",
-#   description: "This is some description.",
-#   is_default: false,
-#   labor_increase: 25,
-#   index: 1
-# )
+Packing.create(
+  name: "I need Partial Packing Help",
+  description: "This is some description.",
+  is_default: false,
+  labor_increase: 25,
+  index: 1
+)
 
-# Packing.create(
-#   name: "I need Full Packing Service",
-#   description: "This is some description.",
-#   is_default: false,
-#   labor_increase: 50,
-#   index: 2
-# )
+Packing.create(
+  name: "I need Full Packing Service",
+  description: "This is some description.",
+  is_default: false,
+  labor_increase: 50,
+  index: 2
+)
 
 # Create requests
 

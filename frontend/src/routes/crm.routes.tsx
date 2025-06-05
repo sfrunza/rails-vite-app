@@ -53,8 +53,7 @@ export const crmRoutes = {
         },
         {
           path: 'extra-services',
-          element: <div>Extra Services</div>,
-          // lazy: () => import('@/pages/crm/settings/extra-services/page'),
+          lazy: () => import('@/pages/crm/settings/extra-services/page'),
         },
         {
           path: 'packing',
@@ -68,8 +67,7 @@ export const crmRoutes = {
         },
         {
           path: 'rates',
-          element: <div>Rates</div>,
-          // lazy: () => import('@/pages/crm/settings/rates/page'),
+          lazy: () => import('@/pages/crm/settings/rates/page'),
         },
         {
           path: 'calendar-rates',

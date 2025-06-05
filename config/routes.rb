@@ -12,41 +12,41 @@ Rails.application.routes.draw do
         collection { post :bulk_update }
       end
 
-      # resources :extra_services, only: %i[index create destroy] do
-      #   collection { post :bulk_update }
-      # end
+      resources :extra_services, only: %i[index create destroy] do
+        collection { post :bulk_update }
+      end
 
-      # resources :packings, only: %i[index update create destroy] do
-      #   collection { post :bulk_update }
-      # end
+      resources :packings, only: %i[index update create destroy] do
+        collection { post :bulk_update }
+      end
 
-      # resources :trucks, only: %i[index create destroy] do
-      #   collection { post :bulk_update }
-      # end
+      resources :trucks, only: %i[index create destroy] do
+        collection { post :bulk_update }
+      end
 
-      # resources :rates, only: %i[index create] do
-      #   collection { post :bulk_update }
-      # end
+      resources :rates, only: %i[index create] do
+        collection { post :bulk_update }
+      end
 
-      # resources :calendar_rates, only: %i[index create update destroy]
-      # resources :employees, only: %i[index show create update]
+      resources :calendar_rates, only: %i[index create update destroy]
+      resources :employees, only: %i[index show create update]
 
-      # resources :users do
-      #   member { patch :update_password }
-      #   collection { get :check_email }
-      # end
+      resources :users do
+        member { patch :update_password }
+        collection { get :check_email }
+      end
 
-      # resources :settings, only: %i[index create] do
-      #   collection { post :bulk_update }
-      # end
+      resources :settings, only: %i[index create] do
+        collection { post :bulk_update }
+      end
 
-      # resources :move_sizes, only: %i[index create update destroy] do
-      #   collection { post :bulk_update }
-      # end
+      resources :move_sizes, only: %i[index create update destroy] do
+        collection { post :bulk_update }
+      end
 
-      # resources :entrance_types, only: %i[index create destroy] do
-      #   collection { post :bulk_update }
-      # end
+      resources :entrance_types, only: %i[index create destroy] do
+        collection { post :bulk_update }
+      end
 
       # resources :requests do
       #   post :unpair, on: :member

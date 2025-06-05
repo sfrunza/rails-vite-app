@@ -20,7 +20,7 @@ export default function SettingPageWrapper({ children, className }: PageProps) {
           </Link>
         </Button>
       </div>
-      <div className={cn('p-4', className)}>{children}</div>
+      <div className={cn('overflow-y-auto p-4', className)}>{children}</div>
     </PageContainer>
   );
 }

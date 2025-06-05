@@ -1,8 +1,3 @@
-import { LoadingButton } from '@/components/loading-button';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { cn, handleApiError } from '@/lib/utils';
-import { useBulkUpdateServicesMutation } from '@/services/services-api';
 import type { Service } from '@/types/service';
 import {
   DndContext,
@@ -18,30 +13,25 @@ import {
   arrayMove,
   sortableKeyboardCoordinates,
 } from '@dnd-kit/sortable';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 import ServiceItem from './service-item';
 
 interface ServiceListProps {
-  movingServices: Service[];
+  items: Service[];
+  setItems: (items: Service[]) => void;
+  setOrderChanged: (orderChanged: boolean) => void;
 }
 
-export default function ServiceList({ movingServices }: ServiceListProps) {
-  const [bulkUpdateServices, { isLoading }] = useBulkUpdateServicesMutation();
-
-  const [items, setItems] = useState<Service[]>(movingServices);
-  const [orderChanged, setOrderChanged] = useState<boolean>(false);
-
+export default function ServiceList({
+  items,
+  setItems,
+  setOrderChanged,
+}: ServiceListProps) {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
-
-  useEffect(() => {
-    setItems(movingServices);
-  }, [movingServices]);
 
   function handleDragEnd(event: any) {
     const { active, over } = event;
@@ -59,76 +49,33 @@ export default function ServiceList({ movingServices }: ServiceListProps) {
   }
 
   function onEnabledChange(itemId: number, value: boolean) {
-    setItems((prev: Service[]) => {
-      return prev.map((item) =>
+    setItems(
+      items.map((item) =>
         item.id === itemId ? { ...item, enabled: value } : item
-      );
-    });
+      )
+    );
     setOrderChanged(true);
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-        modifiers={[restrictToParentElement]}
-      >
-        <SortableContext items={items}>
-          <div className="space-y-2">
-            {items.map((item) => (
-              <ServiceItem
-                key={item.id}
-                id={item.id}
-                item={item}
-                onEnabledChange={onEnabledChange}
-              />
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
-
-      <Separator />
-      <div
-        className={cn('flex transition-opacity duration-500 sm:justify-end', {
-          'invisible opacity-0': !orderChanged,
-          'visible opacity-100': orderChanged,
-        })}
-      >
-        <div className="flex min-h-9 w-full gap-3 sm:w-auto">
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full sm:w-auto"
-            onClick={() => {
-              setItems(movingServices!);
-              setOrderChanged(false);
-            }}
-          >
-            Cancel
-          </Button>
-          <LoadingButton
-            type="button"
-            className="w-full sm:w-auto"
-            disabled={isLoading}
-            loading={isLoading}
-            onClick={() => {
-              bulkUpdateServices({ services: items })
-                .unwrap()
-                .then(() => {
-                  toast.success('Changes saved');
-                  setOrderChanged(false);
-                })
-                .catch((error) => {
-                  handleApiError(error);
-                });
-            }}
-          >
-            Save changes
-          </LoadingButton>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+      modifiers={[restrictToParentElement]}
+    >
+      <SortableContext items={items}>
+        <div className="space-y-2">
+          {items.map((item) => (
+            <ServiceItem
+              key={item.id}
+              id={item.id}
+              item={item}
+              onEnabledChange={onEnabledChange}
+            />
+          ))}
         </div>
-      </div>
-    </div>
+      </SortableContext>
+    </DndContext>
   );
 }

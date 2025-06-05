@@ -10,10 +10,74 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_05_161911) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_05_173430) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
+
+  create_table "calendar_rates", force: :cascade do |t|
+    t.date "date"
+    t.boolean "enable_automation"
+    t.boolean "enable_auto_booking"
+    t.boolean "is_blocked"
+    t.bigint "rate_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date"], name: "index_calendar_rates_on_date"
+    t.index ["rate_id"], name: "index_calendar_rates_on_rate_id"
+  end
+
+  create_table "entrance_types", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "form_name", null: false
+    t.integer "index", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "extra_services", force: :cascade do |t|
+    t.string "name"
+    t.integer "price"
+    t.boolean "enabled", default: true
+    t.integer "index"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "move_sizes", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.integer "index", default: 0
+    t.integer "dispersion"
+    t.integer "truck_count"
+    t.integer "weight"
+    t.integer "volume"
+    t.jsonb "volume_with_dispersion", default: {"max" => 0, "min" => 0}
+    t.jsonb "crew_size_settings", default: [[2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 3, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2]]
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "packings", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.boolean "is_default", default: false
+    t.integer "labor_increase"
+    t.integer "index"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rates", force: :cascade do |t|
+    t.integer "extra_mover_rate"
+    t.integer "extra_truck_rate"
+    t.boolean "enable"
+    t.string "name"
+    t.string "color"
+    t.jsonb "movers_rates", default: {"2" => {"hourly_rate" => 10000}, "3" => {"hourly_rate" => 10000}, "4" => {"hourly_rate" => 10000}, "5" => {"hourly_rate" => 10000}, "6" => {"hourly_rate" => 10000}, "7" => {"hourly_rate" => 10000}, "8" => {"hourly_rate" => 10000}, "9" => {"hourly_rate" => 10000}, "10" => {"hourly_rate" => 10000}}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "services", force: :cascade do |t|
     t.string "name"
@@ -33,6 +97,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_05_161911) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.string "var", null: false
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["var"], name: "index_settings_on_var", unique: true
   end
 
   create_table "solid_cable_messages", force: :cascade do |t|
@@ -177,6 +249,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_05_161911) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "trucks", force: :cascade do |t|
+    t.string "name"
+    t.boolean "is_active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email_address", null: false
     t.string "password_digest", null: false
@@ -192,6 +271,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_05_161911) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "calendar_rates", "rates"
   add_foreign_key "sessions", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
