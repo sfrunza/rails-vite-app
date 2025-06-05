@@ -1,0 +1,6 @@
+{
+  "name": "Moving Dashboard",
+  "short_name": "Mov Dash",
+  "start_url": "/",
+  "display": "standalone"
+}

@@ -35,11 +35,11 @@ export const verifyAuthLoader = async ({ request }: { request: Request }) => {
   //   settingsApi.util.prefetch("getSettings", undefined, { force: true })
   // )
 
-  const sessionId = Cookies.get("session_id");
+  // const sessionId = Cookies.get("session_id");
 
-  if (!sessionId) {
-    return redirect(`/auth/login?return_to=${encodeURIComponent(returnTo)}`);
-  }
+  // if (!sessionId) {
+  //   return redirect(`/auth/login?return_to=${encodeURIComponent(returnTo)}`);
+  // }
 
   const result = await store.dispatch(
     authApi.endpoints.verify.initiate()
