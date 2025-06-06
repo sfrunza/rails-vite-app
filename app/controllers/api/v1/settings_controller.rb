@@ -8,6 +8,7 @@ class Api::V1::SettingsController < ApplicationController
     global_setting = GlobalSetting.instance
 
     settings_json = Rails.cache.fetch(CACHE_KEY, expires_in: 24.hours) do
+      Rails.logger.info "[CACHE] MISS: loading fresh settings"
       {
         company_name: Setting.company_name,
         company_address: Setting.company_address,
@@ -17,6 +18,7 @@ class Api::V1::SettingsController < ApplicationController
         company_logo: global_setting.company_logo.attached? ? url_for(global_setting.company_logo) : nil
       }
     end
+    Rails.logger.info "[CACHE] HIT: returning cached settings"
 
     render json: settings_json
   end
