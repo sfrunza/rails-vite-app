@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -54,20 +55,22 @@ export function ResetPasswordForm() {
               autoComplete="off"
             />
           </div>
-          <LoadingButton
-            loading={isLoading}
-            disabled={isLoading}
-            type="submit"
-            className="w-full"
-          >
-            Change password
-          </LoadingButton>
+          <CardFooter className="border-t p-0">
+            <LoadingButton
+              loading={isLoading}
+              disabled={isLoading}
+              type="submit"
+              className="w-full"
+            >
+              Change password
+            </LoadingButton>
+          </CardFooter>
+          <div className="text-sm">
+            <Link to="/auth/login" className="underline">
+              Log in
+            </Link>
+          </div>
         </form>
-        <div className="mt-4 text-sm">
-          <Link to="/auth/login" className="underline">
-            Log in
-          </Link>
-        </div>
       </CardContent>
     </Card>
   );

@@ -12,6 +12,7 @@ import { servicesApi } from "@/services/services-api";
 import { calendarRatesApi } from "@/services/calendar-rates-api";
 import { ratesApi } from "@/services/rates-api";
 import { extraServicesApi } from "@/services/extra-services-api";
+import { settingsApi } from "@/services/settings-api";
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
     [ratesApi.reducerPath]: ratesApi.reducer,
     [calendarRatesApi.reducerPath]: calendarRatesApi.reducer,
     [extraServicesApi.reducerPath]: extraServicesApi.reducer,
+    [settingsApi.reducerPath]: settingsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -32,6 +34,7 @@ export const store = configureStore({
       ratesApi.middleware,
       calendarRatesApi.middleware,
       extraServicesApi.middleware,
+      settingsApi.middleware,
     ),
 });
 

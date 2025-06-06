@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -78,18 +79,25 @@ export function LoginForm() {
             <Label htmlFor="password">Password</Label>
             <PasswordInput id="password" defaultValue={'111111'} required />
           </div>
-          <LoadingButton loading={isLoading} disabled={isLoading} type="submit">
-            Login
-          </LoadingButton>
+          <CardFooter className="border-t p-0">
+            <LoadingButton
+              loading={isLoading}
+              disabled={isLoading}
+              className="w-full"
+              type="submit"
+            >
+              Login
+            </LoadingButton>
+          </CardFooter>
+          <div className="text-sm">
+            <Link
+              to="/auth/forgot-password"
+              className="ml-auto inline-block text-sm underline"
+            >
+              Forgot your password?
+            </Link>
+          </div>
         </form>
-        <div className="mt-4 text-sm">
-          <Link
-            to="/auth/forgot-password"
-            className="ml-auto inline-block text-sm underline"
-          >
-            Forgot your password?
-          </Link>
-        </div>
       </CardContent>
     </Card>
   );

@@ -16,4 +16,12 @@ class Setting < RailsSettings::Base
   # field :admin_emails, default: "admin@rubyonrails.org", type: :array
   # field :omniauth_google_client_id, default: (ENV["OMNIAUTH_GOOGLE_CLIENT_ID"] || ""), type: :string, readonly: true
   # field :omniauth_google_client_secret, default: (ENV["OMNIAUTH_GOOGLE_CLIENT_SECRET"] || ""), type: :string, readonly: true
+
+  def self.instance
+    first_or_create!
+  end
+
+  def self.company_logo_url
+    company_logo.attached? ? url_for(company_logo) : nil
+  end
 end

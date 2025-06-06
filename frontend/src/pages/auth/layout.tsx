@@ -1,11 +1,11 @@
 import { Outlet } from 'react-router';
 import { ModeToggle } from '@/components/mode-toggle';
-// import { useGetSettingsQuery } from '@/services/settings-api';
+import { useGetSettingsQuery } from '@/services/settings-api';
 
 export default function AuthLayout() {
-  // const { data: settings } = useGetSettingsQuery();
-  // const companyName = settings?.company_name;
-  // const companyLogo = settings?.company_logo;
+  const { data: settings } = useGetSettingsQuery();
+  const companyName = settings?.company_name;
+  const companyLogo = settings?.company_logo;
   return (
     <div className="relative">
       <div className="absolute right-4 top-4 z-50">
@@ -36,14 +36,18 @@ export default function AuthLayout() {
           />
         </svg>
         <div className="flex w-full max-w-sm flex-col gap-6">
-          {/* <div className="flex h-12 items-center gap-2 self-center font-medium">
+          <div className="flex h-12 items-center gap-2 self-center font-medium">
             {settings && (
               <>
-                <img src={companyLogo} alt="Company logo" className="size-12" />
+                <img
+                  src={companyLogo}
+                  alt="Company logo"
+                  className="size-14 object-contain"
+                />
                 {companyName}
               </>
             )}
-          </div> */}
+          </div>
           <Outlet />
           <div className="text-balance text-center text-xs text-muted-foreground">
             By clicking continue, you agree to our{' '}

@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -50,21 +51,23 @@ export function ForgotPasswordForm() {
               autoComplete="off"
             />
           </div>
-          <LoadingButton
-            loading={isLoading}
-            disabled={isLoading}
-            type="submit"
-            className="w-full"
-          >
-            Request password reset
-          </LoadingButton>
+          <CardFooter className="border-t p-0">
+            <LoadingButton
+              loading={isLoading}
+              disabled={isLoading}
+              type="submit"
+              className="w-full"
+            >
+              Request password reset
+            </LoadingButton>
+          </CardFooter>
+          <div className="text-sm">
+            Remebmer your password?{' '}
+            <Link to="/auth/login" className="underline">
+              Log in
+            </Link>
+          </div>
         </form>
-        <div className="mt-4 text-sm">
-          Remebmer your password?{' '}
-          <Link to="/auth/login" className="underline">
-            Log in
-          </Link>
-        </div>
       </CardContent>
     </Card>
   );
