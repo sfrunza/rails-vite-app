@@ -1,5 +1,10 @@
 import { PageContainer } from '@/components/page-container';
-import { buttonVariants } from '@/components/ui/button';
+import {
+  SidebarGroup,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import {
   CalculatorIcon,
@@ -67,27 +72,22 @@ export default function SettingsPage() {
       })}
     >
       <h2 className="px-6 pt-4 text-lg font-semibold">Settings</h2>
-      <div className="space-y-2 p-4">
-        {navLinks.map((item, i) => {
-          return (
-            <NavLink
-              key={i}
-              to={item.href}
-              className={({ isActive }) =>
-                cn(
-                  buttonVariants({
-                    variant: isActive ? 'secondary' : 'ghost',
-                    className: 'w-full justify-start text-left',
-                  })
-                )
-              }
-            >
-              <item.icon className="size-4" />
-              {item.name}
-            </NavLink>
-          );
-        })}
-      </div>
+      <SidebarGroup className="p-4">
+        <SidebarMenu>
+          {navLinks.map((item) => (
+            <SidebarMenuItem key={item.name}>
+              <NavLink to={item.href}>
+                {({ isActive }) => (
+                  <SidebarMenuButton isActive={isActive}>
+                    {item.icon && <item.icon />}
+                    <span>{item.name}</span>
+                  </SidebarMenuButton>
+                )}
+              </NavLink>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarGroup>
     </PageContainer>
   );
 }

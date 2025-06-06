@@ -11,22 +11,21 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { handleApiError } from '@/lib/utils';
-import { useDeleteExtraServiceMutation } from '@/services/extra-services-api';
-import type { ExtraService } from '@/types/extra-service';
+import { useDeletePackingMutation } from '@/services/packings-api';
+import type { Packing } from '@/types/packing';
 import { Trash2Icon } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-type DeleteExtraServiceDialogProps = {
-  extraService: ExtraService;
+type DeletePackingDialogProps = {
+  packing: Packing;
 };
 
-export default function DeleteExtraServiceDialog({
-  extraService,
-}: DeleteExtraServiceDialogProps) {
+export default function DeletePackingDialog({
+  packing,
+}: DeletePackingDialogProps) {
   const [open, setOpen] = useState(false);
-  const [deleteExtraService, { isLoading: isDeleting }] =
-    useDeleteExtraServiceMutation();
+  const [deletePacking, { isLoading: isDeleting }] = useDeletePackingMutation();
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
@@ -40,9 +39,11 @@ export default function DeleteExtraServiceDialog({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Delete extra service?</AlertDialogTitle>
+          <AlertDialogTitle>Delete packing?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will delete <b>{extraService.name}.</b>
+            This will delete <b>{packing.name}.</b>
+            <br />
+            Packing services that have already been used cannot be deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -53,10 +54,10 @@ export default function DeleteExtraServiceDialog({
             disabled={isDeleting}
             variant="destructive"
             onClick={() => {
-              deleteExtraService({ id: extraService.id! })
+              deletePacking({ id: packing.id! })
                 .unwrap()
                 .then(() => {
-                  toast.success('Extra service deleted');
+                  toast.success('Packing deleted');
                   setOpen(false);
                 })
                 .catch((error) => {

@@ -1,9 +1,9 @@
 export interface Rate {
   id: number;
+  name: string;
   extra_mover_rate: number;
   extra_truck_rate: number;
   enable: boolean;
-  name: string;
   color: string;
   movers_rates: {
     [key: string]: {
@@ -15,12 +15,11 @@ export interface Rate {
 
 export interface CalendarRate {
   id: number;
+  formatted_date: string
+  rate_id: number | null;
   enable_automation: boolean;
   enable_auto_booking: boolean;
   is_blocked: boolean;
-  formatted_date: string
-  rate_id: number | null;
-  rate: Rate;
 };
 
 
