@@ -2,23 +2,23 @@ class Api::V1::SettingsController < ApplicationController
   include Pundit::Authorization
   allow_unauthenticated_access only: %i[index]
 
+  CACHE_KEY = "api/v1/settings/index".freeze
+
   def index
     global_setting = GlobalSetting.instance
-    render json: {
-             company_name: Setting.company_name,
-             company_address: Setting.company_address,
-             company_phone: Setting.company_phone,
-             company_email: Setting.company_email,
-             company_website: Setting.company_website,
-             company_logo:
-               (
-                 if global_setting.company_logo.attached?
-                   url_for(global_setting.company_logo)
-                 else
-                   nil
-                 end
-               )
-           }
+
+    settings_json = SolidCache.fetch(CACHE_KEY, expires_in: 1.hour) do
+      {
+        company_name: Setting.company_name,
+        company_address: Setting.company_address,
+        company_phone: Setting.company_phone,
+        company_email: Setting.company_email,
+        company_website: Setting.company_website,
+        company_logo: global_setting.company_logo.attached? ? url_for(global_setting.company_logo) : nil
+      }
+    end
+
+    render json: settings_json
   end
 
   def create
@@ -72,6 +72,9 @@ class Api::V1::SettingsController < ApplicationController
     end
 
     if global_setting.save
+      # Invalidate the cache after successful update
+      SolidCache.delete(CACHE_KEY)
+
       render json: {
                company_name: Setting.company_name,
                company_address: Setting.company_address,
