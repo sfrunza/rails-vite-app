@@ -2,12 +2,12 @@ class Api::V1::SettingsController < ApplicationController
   include Pundit::Authorization
   allow_unauthenticated_access only: %i[index]
 
-  CACHE_KEY = "api/v1/settings/index".freeze
+  CACHE_KEY = "company_settings".freeze
 
   def index
     global_setting = GlobalSetting.instance
 
-    settings_json = SolidCache.fetch(CACHE_KEY, expires_in: 1.hour) do
+    settings_json = Rails.cache.fetch(CACHE_KEY, expires_in: 24.hours) do
       {
         company_name: Setting.company_name,
         company_address: Setting.company_address,
@@ -50,6 +50,9 @@ class Api::V1::SettingsController < ApplicationController
       end
     end
 
+    # Invalidate cached company settings
+    Rails.cache.delete(CACHE_KEY)
+
     render json: { message: "Settings updated successfully" }, status: :ok
   end
 
@@ -72,8 +75,9 @@ class Api::V1::SettingsController < ApplicationController
     end
 
     if global_setting.save
+
       # Invalidate the cache after successful update
-      SolidCache.delete(CACHE_KEY)
+      Rails.cache.delete(CACHE_KEY)
 
       render json: {
                company_name: Setting.company_name,
