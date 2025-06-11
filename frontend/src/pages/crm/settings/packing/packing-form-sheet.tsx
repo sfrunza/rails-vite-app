@@ -26,14 +26,14 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { LoadingButton } from '@/components/loading-button';
+import { Textarea } from '@/components/ui/textarea';
 import {
   useCreatePackingMutation,
   useUpdatePackingMutation,
 } from '@/services/packings-api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import { PencilIcon, PlusIcon } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
+import { PenLineIcon, PlusIcon } from 'lucide-react';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Name is required.' }),
@@ -99,7 +99,7 @@ export default function PackingFormSheet({ data }: PackingFormSheetProps) {
       <SheetTrigger asChild>
         {isEditing ? (
           <Button variant="outline" size="icon">
-            <PencilIcon />
+            <PenLineIcon />
           </Button>
         ) : (
           <Button>

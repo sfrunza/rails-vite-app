@@ -3,7 +3,8 @@ puts "Deleting old records..."
 # Request.delete_all
 Service.delete_all
 Packing.delete_all
-# CalendarRate.delete_all
+EntranceType.delete_all
+CalendarRate.delete_all
 Rate.delete_all
 Truck.delete_all
 Session.delete_all
@@ -216,6 +217,33 @@ Packing.create(
   labor_increase: 50,
   index: 2
 )
+
+EntranceType.create(
+  name: "1st Floor",
+  form_name: "1",
+)
+
+EntranceType.create(
+  name: "2nd Floor",
+  form_name: "2",
+)
+
+EntranceType.create(
+  name: "3rd Floor",
+  form_name: "3",
+)
+
+EntranceType.create(
+  name: "Elevator",
+  form_name: "Elevator",
+)
+
+EntranceType.create(
+  name: "Private House",
+  form_name: "House",
+)
+
+CalendarRate.create_full_year
 
 # Create requests
 

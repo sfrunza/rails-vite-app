@@ -1,4 +1,4 @@
-import { PencilIcon } from 'lucide-react';
+import { PenLineIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -195,7 +195,7 @@ function RatesPage() {
                       setCurrentEdit((prev) => (prev === idx ? null : idx));
                     }}
                   >
-                    <PencilIcon />
+                    <PenLineIcon />
                   </Button>
                 </div>
               ))}

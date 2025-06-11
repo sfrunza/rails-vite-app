@@ -83,8 +83,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_024648) do
     t.integer "index", default: 0
     t.integer "dispersion"
     t.integer "truck_count"
-    t.integer "weight"
-    t.integer "volume"
+    t.decimal "weight", precision: 8, scale: 2
+    t.decimal "volume", precision: 8, scale: 2
     t.jsonb "volume_with_dispersion", default: {"max" => 0, "min" => 0}
     t.jsonb "crew_size_settings", default: [[2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 3, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2], [2, 2, 2, 2, 2, 2, 2]]
     t.datetime "created_at", null: false

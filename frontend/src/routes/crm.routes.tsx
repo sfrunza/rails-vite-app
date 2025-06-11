@@ -49,7 +49,6 @@ export const crmRoutes = {
         {
           path: 'services',
           lazy: () => import('@/pages/crm/settings/services/page'),
-          // lazy: () => import('@/pages/crm/settings/services/page'),
         },
         {
           path: 'extra-services',
@@ -82,8 +81,7 @@ export const crmRoutes = {
         },
         {
           path: 'calculator',
-          element: <div>Calculator</div>,
-          // lazy: () => import('@/pages/crm/settings/calculator/page'),
+          lazy: () => import('@/pages/crm/settings/calculator/page'),
         },
       ],
     },

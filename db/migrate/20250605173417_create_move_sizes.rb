@@ -6,8 +6,8 @@ class CreateMoveSizes < ActiveRecord::Migration[8.0]
       t.integer :index, default: 0
       t.integer :dispersion
       t.integer :truck_count
-      t.integer :weight
-      t.integer :volume
+      t.decimal :weight, precision: 8, scale: 2
+      t.decimal :volume, precision: 8, scale: 2
       t.jsonb :volume_with_dispersion, default: { min: 0, max: 0 }
       t.jsonb :crew_size_settings,
               default: [
