@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dialog';
 import { useGetRatesQuery } from '@/services/rates-api';
 import { useUpdateCalendarRateMutation } from '@/services/calendar-rates-api';
+import { handleApiError } from '@/lib/utils';
 
 interface SelectRateModalProps {
   isOpen: boolean;
@@ -38,7 +39,7 @@ export default function SelectRateModal({
     'PPP'
   );
 
-  async function handleSaveRate(id: number, newRateId: number) {
+  function handleSaveRate(id: number, newRateId: number) {
     const newData: Partial<CalendarRate> = {};
     if (newRateId === 0) {
       newData['is_blocked'] = true;
@@ -47,7 +48,11 @@ export default function SelectRateModal({
       newData['rate_id'] = newRateId;
       newData['is_blocked'] = false;
     }
-    await updateCalendarRate({ id, newData }).unwrap();
+    updateCalendarRate({ id, newData })
+      .unwrap()
+      .catch((error) => {
+        handleApiError(error);
+      });
   }
 
   return (

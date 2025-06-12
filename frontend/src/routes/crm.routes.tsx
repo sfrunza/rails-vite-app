@@ -72,8 +72,7 @@ export const crmRoutes = {
         },
         {
           path: 'department',
-          element: <div>Department</div>,
-          // lazy: () => import('@/pages/crm/settings/department/page'),
+          lazy: () => import('@/pages/crm/settings/department/page'),
         },
         {
           path: 'company',

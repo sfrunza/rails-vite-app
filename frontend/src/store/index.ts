@@ -17,6 +17,7 @@ import { trucksApi } from "@/services/trucks-api";
 import { packingsApi } from "@/services/packings-api";
 import { moveSizesApi } from "@/services/move-sizes-api";
 import { entranceTypesApi } from "@/services/entrance-types-api";
+import { employeesApi } from "@/services/employees-api";
 
 export const store = configureStore({
   reducer: {
@@ -32,6 +33,7 @@ export const store = configureStore({
     [packingsApi.reducerPath]: packingsApi.reducer,
     [moveSizesApi.reducerPath]: moveSizesApi.reducer,
     [entranceTypesApi.reducerPath]: entranceTypesApi.reducer,
+    [employeesApi.reducerPath]: employeesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -47,6 +49,7 @@ export const store = configureStore({
       packingsApi.middleware,
       moveSizesApi.middleware,
       entranceTypesApi.middleware,
+      employeesApi.middleware,
     ),
 });
 
