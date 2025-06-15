@@ -4,9 +4,9 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVerticalIcon } from 'lucide-react';
 
+import { NumericInput } from '@/components/numeric-input';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { PriceInput } from '@/components/price-input';
 import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 import { type ExtraService } from '@/types/extra-service';
@@ -65,14 +65,13 @@ export default function ExtraServiceItem({
           onChange(item.id, { name: value });
         }}
       />
-
-      <PriceInput
-        id={item.id.toString()}
-        value={item.price}
-        onValueChange={(val) => {
-          onChange(item.id, {
-            price: val,
-          });
+      <NumericInput
+        defaultValue={(item.price / 100).toString()}
+        min={0}
+        max={10000}
+        allowDecimals={true}
+        onChange={(value) => {
+          onChange(item.id, { price: Number(value) * 100 });
         }}
       />
       <Switch

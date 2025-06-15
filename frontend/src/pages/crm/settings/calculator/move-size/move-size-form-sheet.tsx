@@ -47,6 +47,7 @@ import type { MoveSize } from '@/types/move-size';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PenLineIcon, PlusIcon } from 'lucide-react';
 import { MoversMatrix } from './movers-matrix';
+import { NumericInput } from '@/components/numeric-input';
 
 const DEFAULT_MATRIX = [
   [2, 2, 2, 2, 2, 2, 2],
@@ -85,10 +86,11 @@ const formSchema = z.object({
   description: z.string(),
   dispersion: z.coerce
     .number()
-    .min(0, { message: 'Dispersion must be greater than 0' }),
+    .min(0, { message: 'Dispersion must be greater than 0' })
+    .max(100, { message: 'Dispersion must be less than 100' }),
   truck_count: z.coerce
     .number()
-    .min(0, { message: 'Truck count must be greater than 0' }),
+    .min(1, { message: 'Truck count must be at least 1' }),
   volume: z.coerce
     .number()
     .min(0, { message: 'Volume must be greater than 0' }),
@@ -124,8 +126,9 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
   const [preview, setPreview] = useState<string | null>(null);
 
   const form = useForm<Inputs>({
-    // values: data ?? undefined,
     resolver: zodResolver(formSchema),
+    mode: 'onChange',
+    reValidateMode: 'onChange',
     defaultValues: {
       name: '',
       description: '',
@@ -232,10 +235,7 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
                   </FormItem>
                 )}
               />
-              <div
-                className="flex justify-center items-center"
-                // className="flex justify-center size-40 flex-col w-full justify-center items-center rounded-lg border-2 border-dashed"
-              >
+              <div className="flex justify-center items-center">
                 {preview && (
                   <div className="relative size-40 p-1 rounded-md border-2 border-dashed">
                     <img
@@ -285,14 +285,16 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
                   <FormItem>
                     <FormLabel>Dispersion %</FormLabel>
                     <FormDescription>
-                      Dispersion of the move size, visible to customers.
+                      Dispersion of the move size.
                     </FormDescription>
                     <FormControl>
-                      <Input
-                        type="number"
-                        pattern="[0-9]+"
-                        inputMode="numeric"
-                        {...field}
+                      <NumericInput
+                        defaultValue={field.value.toString()}
+                        min={0}
+                        max={100}
+                        onChange={(value) => {
+                          field.onChange(value);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -306,13 +308,16 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
                   <FormItem>
                     <FormLabel>Trucks count for this size</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        pattern="[0-9]+"
-                        inputMode="numeric"
-                        {...field}
+                      <NumericInput
+                        defaultValue={field.value.toString()}
+                        min={1}
+                        max={10}
+                        onChange={(value) => {
+                          field.onChange(value);
+                        }}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -323,7 +328,15 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
                   <FormItem>
                     <FormLabel>Volume</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <NumericInput
+                        defaultValue={field.value.toString()}
+                        min={0}
+                        max={100000}
+                        allowDecimals={true}
+                        onChange={(value) => {
+                          field.onChange(value);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -336,7 +349,15 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
                   <FormItem>
                     <FormLabel>Weight</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <NumericInput
+                        defaultValue={field.value.toString()}
+                        min={0}
+                        max={100000}
+                        allowDecimals={true}
+                        onChange={(value) => {
+                          field.onChange(value);
+                        }}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

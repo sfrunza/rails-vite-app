@@ -1,6 +1,6 @@
-import { Input } from '@/components/ui/input';
 import type { MoveSize } from '@/types/move-size';
 import { useGetEntranceTypesQuery } from '@/services/entrance-types-api';
+import { NumericInput } from '@/components/numeric-input';
 
 interface MoversMatrixProps {
   value: MoveSize['crew_size_settings'];
@@ -77,20 +77,22 @@ export function MoversMatrix({ value, onChange }: MoversMatrixProps) {
 
                 {/* Row cells */}
                 {floorOptions.map((_, destinationIndex) => (
-                  <Input
+                  <NumericInput
                     key={`cell-${originIndex}-${destinationIndex}`}
                     name={`cell-${originIndex}-${destinationIndex}`}
-                    type="number"
-                    className="w-full p-0 text-center"
-                    inputMode="numeric"
-                    value={value[originIndex][destinationIndex]}
-                    onChange={(e) =>
+                    defaultValue={value[originIndex][
+                      destinationIndex
+                    ].toString()}
+                    min={2}
+                    max={20}
+                    onChange={(value) => {
                       handleCellChange(
                         originIndex,
                         destinationIndex,
-                        Number(e.target.value)
-                      )
-                    }
+                        Number(value)
+                      );
+                    }}
+                    className="w-full p-0 text-center"
                   />
                 ))}
               </div>

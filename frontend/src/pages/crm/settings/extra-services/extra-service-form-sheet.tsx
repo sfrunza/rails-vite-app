@@ -25,11 +25,11 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { LoadingButton } from '@/components/loading-button';
+import { NumericInput } from '@/components/numeric-input';
 import { handleApiError } from '@/lib/utils';
 import { useCreateExtraServiceMutation } from '@/services/extra-services-api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusIcon } from 'lucide-react';
-import { PriceInput } from '@/components/price-input';
 
 const formSchema = z.object({
   name: z.string({ required_error: 'Name is required.' }).min(1, {
@@ -106,10 +106,13 @@ export default function ExtraServiceFormSheet() {
                   <FormItem>
                     <FormLabel>Price</FormLabel>
                     <FormControl>
-                      <PriceInput
-                        name="price"
-                        value={field.value}
-                        onValueChange={field.onChange}
+                      <NumericInput
+                        defaultValue={(field.value / 100).toString()}
+                        min={0}
+                        max={100}
+                        onChange={(value) => {
+                          field.onChange(Number(value) * 100);
+                        }}
                       />
                     </FormControl>
                   </FormItem>

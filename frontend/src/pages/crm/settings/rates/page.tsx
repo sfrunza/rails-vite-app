@@ -20,14 +20,13 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { cn, handleApiError } from '@/lib/utils';
 import SettingPageWrapper from '../setting-page-wrapper';
 
-// import { formatCentsToDollarsString, hexToRgb } from '@/lib/helpers';
 import {
   useGetRatesQuery,
   useBulkUpdateRatesMutation,
 } from '@/services/rates-api';
 import type { Rate } from '@/types/rate';
 import { formatCentsToDollarsString, hexToRgb } from '@/lib/helpers';
-import { PriceInput } from '@/components/price-input';
+import { NumericInput } from '@/components/numeric-input';
 
 const tableGrid =
   'grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] items-center gap-4 px-1 text-sm font-medium';
@@ -82,6 +81,7 @@ function RatesPage() {
                   {currentEdit === idx ? (
                     <div className="grid grid-cols-[auto_36px] gap-2">
                       <Input
+                        name={`${rate.name}-name`}
                         value={rate.name}
                         onChange={(e) => {
                           handleUpdateRate({
@@ -91,6 +91,7 @@ function RatesPage() {
                         }}
                       />
                       <Input
+                        name={`${rate.name}-color`}
                         type="color"
                         value={rate.color}
                         onChange={(e) => {
@@ -125,21 +126,24 @@ function RatesPage() {
                       const hRate = rate.movers_rates[mover].hourly_rate;
                       if (currentEdit === idx) {
                         return (
-                          <PriceInput
-                            value={hRate}
-                            onValueChange={(val) => {
+                          <NumericInput
+                            name={`${rate.name}-${mover}-${i}`}
+                            key={i}
+                            defaultValue={(hRate / 100).toString()}
+                            min={0}
+                            max={10000}
+                            onChange={(value) => {
                               handleUpdateRate({
                                 ...rate,
                                 movers_rates: {
                                   ...rate.movers_rates,
                                   [mover]: {
                                     ...rate.movers_rates[mover],
-                                    hourly_rate: val,
+                                    hourly_rate: Number(value) * 100,
                                   },
                                 },
                               });
                             }}
-                            key={i}
                           />
                         );
                       }
@@ -149,14 +153,17 @@ function RatesPage() {
                     })}
                   <div>
                     {currentEdit === idx ? (
-                      <PriceInput
-                        value={rate.extra_mover_rate}
-                        onValueChange={(val) =>
+                      <NumericInput
+                        name={`${rate.name}-extra-mover`}
+                        defaultValue={(rate.extra_mover_rate / 100).toString()}
+                        min={0}
+                        max={10000}
+                        onChange={(value) => {
                           handleUpdateRate({
                             ...rate,
-                            extra_mover_rate: val,
-                          })
-                        }
+                            extra_mover_rate: Number(value) * 100,
+                          });
+                        }}
                       />
                     ) : (
                       formatCentsToDollarsString(rate.extra_mover_rate)
@@ -164,21 +171,24 @@ function RatesPage() {
                   </div>
                   <div>
                     {currentEdit === idx ? (
-                      <PriceInput
-                        value={rate.extra_truck_rate}
-                        onValueChange={(val) =>
+                      <NumericInput
+                        name={`${rate.name}-extra-truck`}
+                        defaultValue={(rate.extra_truck_rate / 100).toString()}
+                        min={0}
+                        max={10000}
+                        onChange={(value) => {
                           handleUpdateRate({
                             ...rate,
-                            extra_truck_rate: val,
-                          })
-                        }
+                            extra_truck_rate: Number(value) * 100,
+                          });
+                        }}
                       />
                     ) : (
                       formatCentsToDollarsString(rate.extra_truck_rate)
                     )}
                   </div>
                   <Switch
-                    id={rate.name}
+                    id={`${rate.name}-enable`}
                     checked={rate.enable}
                     disabled={idx === 0}
                     onCheckedChange={(checked) => {

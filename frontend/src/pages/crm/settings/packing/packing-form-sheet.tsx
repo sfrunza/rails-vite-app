@@ -34,6 +34,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { PenLineIcon, PlusIcon } from 'lucide-react';
+import { NumericInput } from '@/components/numeric-input';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Name is required.' }),
@@ -156,11 +157,13 @@ export default function PackingFormSheet({ data }: PackingFormSheetProps) {
                   <FormItem>
                     <FormLabel>Labor increse (%)</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="number"
-                        pattern="[0-9]+"
-                        inputMode="numeric"
+                      <NumericInput
+                        defaultValue={field.value.toString()}
+                        min={0}
+                        max={100}
+                        onChange={(value) => {
+                          field.onChange(value);
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
