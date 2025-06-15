@@ -20,12 +20,13 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import type { Packing } from '@/types/packing';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { LoadingButton } from '@/components/loading-button';
+import { NumericInput } from '@/components/numeric-input';
 import { Textarea } from '@/components/ui/textarea';
 import {
   useCreatePackingMutation,
@@ -34,7 +35,6 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { PenLineIcon, PlusIcon } from 'lucide-react';
-import { NumericInput } from '@/components/numeric-input';
 
 const formSchema = z.object({
   name: z.string().min(1, { message: 'Name is required.' }),
@@ -58,18 +58,13 @@ export default function PackingFormSheet({ data }: PackingFormSheetProps) {
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: zodResolver(formSchema),
+    values: data ?? undefined,
     defaultValues: {
       name: '',
       description: '',
       labor_increase: 0,
     },
   });
-
-  useEffect(() => {
-    if (data) {
-      form.reset(data);
-    }
-  }, [data]);
 
   async function onSubmit(values: Inputs) {
     const result = isEditing
@@ -95,8 +90,13 @@ export default function PackingFormSheet({ data }: PackingFormSheetProps) {
     toast.success(`Packing ${isEditing ? 'updated' : 'added'}`);
     setIsOpen(false);
   }
+
+  function onClose() {
+    form.reset();
+    setIsOpen((prev) => !prev);
+  }
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetTrigger asChild>
         {isEditing ? (
           <Button variant="outline" size="icon">
@@ -158,7 +158,7 @@ export default function PackingFormSheet({ data }: PackingFormSheetProps) {
                     <FormLabel>Labor increse (%)</FormLabel>
                     <FormControl>
                       <NumericInput
-                        defaultValue={field.value.toString()}
+                        value={field.value.toString()}
                         min={0}
                         max={100}
                         onChange={(value) => {
@@ -175,7 +175,7 @@ export default function PackingFormSheet({ data }: PackingFormSheetProps) {
         </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button type="button" variant="outline" className="w-full">
+            <Button type="button" variant="outline">
               Cancel
             </Button>
           </SheetClose>
@@ -184,7 +184,6 @@ export default function PackingFormSheet({ data }: PackingFormSheetProps) {
             loading={isCreating || isUpdating}
             disabled={isCreating || isUpdating}
             onClick={form.handleSubmit(onSubmit)}
-            className="w-full"
           >
             {`${isEditing ? 'Update' : 'Add'} packing`}
           </LoadingButton>

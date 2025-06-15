@@ -107,9 +107,11 @@ export default function ExtraServiceFormSheet() {
                     <FormLabel>Price</FormLabel>
                     <FormControl>
                       <NumericInput
-                        defaultValue={(field.value / 100).toString()}
+                        value={(field.value / 100).toString()}
                         min={0}
-                        max={100}
+                        max={10000}
+                        step={0.01}
+                        allowDecimals={true}
                         onChange={(value) => {
                           field.onChange(Number(value) * 100);
                         }}

@@ -1,3 +1,13 @@
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -19,22 +29,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 
 import { LoadingButton } from '@/components/loading-button';
+import { NumericInput } from '@/components/numeric-input';
 import { Textarea } from '@/components/ui/textarea';
 import { handleApiError } from '@/lib/utils';
 import { useGetEntranceTypesQuery } from '@/services/entrance-types-api';
@@ -47,7 +48,6 @@ import type { MoveSize } from '@/types/move-size';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PenLineIcon, PlusIcon } from 'lucide-react';
 import { MoversMatrix } from './movers-matrix';
-import { NumericInput } from '@/components/numeric-input';
 
 const DEFAULT_MATRIX = [
   [2, 2, 2, 2, 2, 2, 2],
@@ -129,6 +129,7 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
     resolver: zodResolver(formSchema),
     mode: 'onChange',
     reValidateMode: 'onChange',
+    values: data ?? undefined,
     defaultValues: {
       name: '',
       description: '',
@@ -140,24 +141,6 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
       image: undefined,
     },
   });
-
-  useEffect(() => {
-    if (data) {
-      form.reset({
-        name: data.name,
-        description: data.description,
-        dispersion: data.dispersion,
-        truck_count: data.truck_count,
-        volume: data.volume,
-        weight: data.weight,
-        crew_size_settings:
-          data.crew_size_settings.length > 0
-            ? data.crew_size_settings
-            : DEFAULT_MATRIX,
-      });
-      setPreview(data.image_url);
-    }
-  }, [data]);
 
   async function onSubmit(values: Inputs) {
     if (data) {
@@ -189,6 +172,7 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
     form.reset();
     setIsOpen((prev) => !prev);
   }
+
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetTrigger asChild>
@@ -289,7 +273,7 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
                     </FormDescription>
                     <FormControl>
                       <NumericInput
-                        defaultValue={field.value.toString()}
+                        value={field.value.toString()}
                         min={0}
                         max={100}
                         onChange={(value) => {
@@ -309,7 +293,7 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
                     <FormLabel>Trucks count for this size</FormLabel>
                     <FormControl>
                       <NumericInput
-                        defaultValue={field.value.toString()}
+                        value={field.value.toString()}
                         min={1}
                         max={10}
                         onChange={(value) => {
@@ -329,7 +313,7 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
                     <FormLabel>Volume</FormLabel>
                     <FormControl>
                       <NumericInput
-                        defaultValue={field.value.toString()}
+                        value={field.value.toString()}
                         min={0}
                         max={100000}
                         allowDecimals={true}
@@ -350,7 +334,7 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
                     <FormLabel>Weight</FormLabel>
                     <FormControl>
                       <NumericInput
-                        defaultValue={field.value.toString()}
+                        value={field.value.toString()}
                         min={0}
                         max={100000}
                         allowDecimals={true}
@@ -436,7 +420,7 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
             )}
           </div>
           <SheetClose asChild>
-            <Button type="button" variant="outline" className="w-full">
+            <Button type="button" variant="outline">
               Cancel
             </Button>
           </SheetClose>
@@ -445,7 +429,6 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
             loading={isCreating || isUpdating}
             disabled={isCreating || isUpdating}
             onClick={form.handleSubmit(onSubmit)}
-            className="w-full"
           >
             {data ? 'Save changes' : 'Add move size'}
           </LoadingButton>

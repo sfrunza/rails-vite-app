@@ -69,6 +69,7 @@ export default function ExtraServiceItem({
         defaultValue={(item.price / 100).toString()}
         min={0}
         max={10000}
+        step={0.01}
         allowDecimals={true}
         onChange={(value) => {
           onChange(item.id, { price: Number(value) * 100 });

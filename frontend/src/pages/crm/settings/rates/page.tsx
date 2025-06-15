@@ -129,7 +129,7 @@ function RatesPage() {
                           <NumericInput
                             name={`${rate.name}-${mover}-${i}`}
                             key={i}
-                            defaultValue={(hRate / 100).toString()}
+                            value={(hRate / 100).toString()}
                             min={0}
                             max={10000}
                             onChange={(value) => {
@@ -155,7 +155,7 @@ function RatesPage() {
                     {currentEdit === idx ? (
                       <NumericInput
                         name={`${rate.name}-extra-mover`}
-                        defaultValue={(rate.extra_mover_rate / 100).toString()}
+                        value={(rate.extra_mover_rate / 100).toString()}
                         min={0}
                         max={10000}
                         onChange={(value) => {
@@ -173,7 +173,7 @@ function RatesPage() {
                     {currentEdit === idx ? (
                       <NumericInput
                         name={`${rate.name}-extra-truck`}
-                        defaultValue={(rate.extra_truck_rate / 100).toString()}
+                        value={(rate.extra_truck_rate / 100).toString()}
                         min={0}
                         max={10000}
                         onChange={(value) => {
