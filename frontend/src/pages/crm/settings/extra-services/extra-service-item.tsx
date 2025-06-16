@@ -66,7 +66,7 @@ export default function ExtraServiceItem({
         }}
       />
       <NumericInput
-        defaultValue={(item.price / 100).toString()}
+        value={(item.price / 100).toString()}
         min={0}
         max={10000}
         step={0.01}

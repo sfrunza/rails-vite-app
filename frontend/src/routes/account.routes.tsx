@@ -8,7 +8,7 @@ export const accountRoutes = {
   path: 'account',
   loader: verifyAuthLoader,
   element: (
-    <PrivateRoute allowedRoles={['admin', 'manager']}>
+    <PrivateRoute allowedRoles={['admin', 'manager', 'customer']}>
       <AccountLayout />
     </PrivateRoute>
   ),

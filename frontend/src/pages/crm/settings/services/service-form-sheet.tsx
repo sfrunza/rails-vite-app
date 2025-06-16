@@ -64,8 +64,14 @@ export default function ServiceSheetForm() {
         handleApiError(error);
       });
   }
+
+  function onClose() {
+    form.reset();
+    setIsOpen((prev) => !prev);
+  }
+
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetTrigger asChild>
         <Button>
           <PlusIcon />

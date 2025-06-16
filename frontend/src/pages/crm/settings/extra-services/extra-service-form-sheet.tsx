@@ -67,8 +67,14 @@ export default function ExtraServiceFormSheet() {
         handleApiError(error);
       });
   }
+
+  function onClose() {
+    form.reset();
+    setIsOpen((prev) => !prev);
+  }
+
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+    <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetTrigger asChild>
         <Button>
           <PlusIcon />
@@ -125,7 +131,7 @@ export default function ExtraServiceFormSheet() {
         </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button type="button" variant="outline" className="w-full">
+            <Button type="button" variant="outline">
               Cancel
             </Button>
           </SheetClose>
@@ -134,7 +140,6 @@ export default function ExtraServiceFormSheet() {
             loading={isCreating}
             disabled={isCreating}
             onClick={form.handleSubmit(onSubmit)}
-            className="w-full"
           >
             Add service
           </LoadingButton>
