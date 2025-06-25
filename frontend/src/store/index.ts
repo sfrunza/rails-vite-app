@@ -5,6 +5,8 @@ import {
 } from "react-redux";
 
 import authReducer from "@/slices/auth-slice";
+import requestReducer from "@/slices/request-slice";
+import requestsReducer from "@/slices/requests-slice";
 import { authApi } from "@/services/auth-api";
 import { rtkQueryErrorLogger } from "@/services/base-service";
 import { usersApi } from "@/services/users-api";
@@ -18,10 +20,13 @@ import { packingsApi } from "@/services/packings-api";
 import { moveSizesApi } from "@/services/move-sizes-api";
 import { entranceTypesApi } from "@/services/entrance-types-api";
 import { employeesApi } from "@/services/employees-api";
+import { requestsApi } from "@/services/requests-api";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
+    request: requestReducer,
+    requests: requestsReducer,
     [authApi.reducerPath]: authApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [servicesApi.reducerPath]: servicesApi.reducer,
@@ -34,6 +39,7 @@ export const store = configureStore({
     [moveSizesApi.reducerPath]: moveSizesApi.reducer,
     [entranceTypesApi.reducerPath]: entranceTypesApi.reducer,
     [employeesApi.reducerPath]: employeesApi.reducer,
+    [requestsApi.reducerPath]: requestsApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -50,6 +56,7 @@ export const store = configureStore({
       moveSizesApi.middleware,
       entranceTypesApi.middleware,
       employeesApi.middleware,
+      requestsApi.middleware
     ),
 });
 

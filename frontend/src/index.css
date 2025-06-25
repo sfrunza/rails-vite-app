@@ -3,7 +3,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: 'DMSans';
+  font-weight: 200 900;
+  font-display: swap;
+  font-style: normal;
+  font-stretch: 75% 125%;
+  src: url('/fonts/DMSans-VariableFont.ttf') format('truetype');
+}
+
 @theme inline {
+  --font-sans: var(--font-sans);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -42,6 +52,7 @@
 }
 
 :root {
+  --font-sans: 'DMSans';
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);

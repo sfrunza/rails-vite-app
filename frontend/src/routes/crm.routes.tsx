@@ -21,12 +21,11 @@ export const crmRoutes = {
     },
     {
       path: 'requests',
-      element: <div>Requests</div>,
-      // lazy: () => import('@/pages/crm/requests/page'),
+      lazy: () => import('@/pages/crm/requests/page'),
     },
     {
       path: 'requests/:id',
-      // lazy: () => import('@/pages/crm/request/page'),
+      lazy: () => import('@/pages/crm/request/page'),
     },
     {
       path: 'dispatch',

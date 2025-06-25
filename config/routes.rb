@@ -6,7 +6,12 @@ Rails.application.routes.draw do
       resource :session, only: %i[ create show destroy ]
       resources :passwords, param: :token
 
-      resources :users, only: %i[ show ]
+      # resources :users, only: %i[ show ]
+      resources :users do
+        member { patch :update_password }
+        collection { get :check_email }
+        # resources :requests, only: %i[index show], controller: "user_requests"
+      end
 
       resources :services, only: %i[index create destroy] do
         collection { post :bulk_update }
@@ -48,16 +53,16 @@ Rails.application.routes.draw do
         collection { post :bulk_update }
       end
 
-      # resources :requests do
-      #   post :unpair, on: :member
-      #   post "pair", on: :member
-      #   get "status_counts", on: :collection
-      #   post :images, on: :member
-      #   delete "/images/:image_id", to: "requests#delete_image", on: :member
-      #   post :clone, on: :member
-      # end
+      resources :requests do
+        post :unpair, on: :member
+        post "pair", on: :member
+        get "status_counts", on: :collection
+        post :images, on: :member
+        delete "/images/:image_id", to: "requests#delete_image", on: :member
+        post :clone, on: :member
+      end
 
-      # resources :search, only: %i[index]
+      resources :search, only: %i[index]
     end
   end
 

@@ -8,7 +8,7 @@ class Packing < ApplicationRecord
             }
 
   # Associations
-  # has_many :requests
+  has_many :requests, dependent: :restrict_with_error
 
   # Callbacks
   acts_as_list column: :index, top_of_list: 0

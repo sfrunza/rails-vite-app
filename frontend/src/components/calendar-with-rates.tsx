@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import { InfoIcon } from 'lucide-react';
-import { type ReactElement, useMemo, useState, useCallback, memo } from 'react';
+import { memo, type ReactElement, useCallback, useMemo, useState } from 'react';
 import { type DayButtonProps, DayPicker } from 'react-day-picker';
 
 import { buttonVariants } from '@/components/ui/button';
@@ -15,9 +15,9 @@ import { cn } from '@/lib/utils';
 import { useGetCalendarRatesQuery } from '@/services/calendar-rates-api';
 import { useGetRatesQuery } from '@/services/rates-api';
 import { type CalendarRate, type Rate } from '@/types/rate';
+import React from 'react';
 import { Calendar } from './ui/calendar';
 import { Skeleton } from './ui/skeleton';
-import React from 'react';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
   onSelectDate: (date: Date, rateData: CalendarRate) => void;
@@ -161,9 +161,10 @@ export const CalendarWithRates = memo(function CalendarWithRates({
         components={{
           DayButton: dayButtonComponent,
         }}
+        footer={showFooter ? <CalendarFooter /> : undefined}
         {...calendarProps}
       />
-      {showFooter && <CalendarFooter />}
+      {/* {showFooter && <CalendarFooter />} */}
     </>
   );
 });
@@ -212,7 +213,7 @@ const CalendarFooter = memo(function CalendarFooter() {
   }, [dbRates]);
 
   return (
-    <div className="w-68 border-t bg-muted">
+    <div className="w-62 border-t rounded-b-md bg-muted">
       <div className="flex w-full flex-wrap items-center justify-center gap-2 p-4 text-xs font-semibold">
         {rateElements}
         <div

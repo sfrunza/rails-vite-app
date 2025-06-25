@@ -6,12 +6,11 @@ class MoveSize < ApplicationRecord
 
   # Associations
   has_one_attached :image
+  has_many :requests, dependent: :nullify
 
   # Callbacks
   acts_as_list column: :index, top_of_list: 0
   before_save :custom_active_storage_path
-
-  # has_many :requests
 
   def custom_active_storage_path
     if image.attached? && image.blob.new_record?

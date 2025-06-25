@@ -39,7 +39,8 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # Set localhost to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:smtp, :domain) }
+  config.action_mailer.default_url_options = { host: "localhost", port: 3001 }
+  Rails.application.routes.default_url_options = { host: "localhost", port: 3001 }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   config.action_mailer.smtp_settings = {

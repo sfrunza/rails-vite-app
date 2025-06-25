@@ -29,12 +29,12 @@ export const employeesApi = createApi({
         }
         return [{ type: 'Employee', id: 'LIST' }]
       },
-      // Add 2 second delay
-      transformResponse: (response: User) => {
-        return new Promise((resolve) => {
-          setTimeout(() => resolve(response), 1000);
-        });
-      },
+      // Add 1 second delay
+      // transformResponse: (response: User) => {
+      //   return new Promise((resolve) => {
+      //     setTimeout(() => resolve(response), 1000);
+      //   });
+      // },
 
     }),
     updateEmployee: builder.mutation<User, { id: number; data: Partial<User> }>({

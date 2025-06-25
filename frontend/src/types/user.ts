@@ -3,8 +3,8 @@ export type UserRole = 'admin' | 'manager' | 'customer' | 'foreman' | 'driver' |
 export interface User extends SessionUser {
   phone: string;
   active: boolean;
-  additional_email: string;
-  additional_phone: string;
+  additional_email?: string;
+  additional_phone?: string;
   created_at: string;
   updated_at: string;
 }

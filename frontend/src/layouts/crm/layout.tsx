@@ -11,6 +11,8 @@ import { AppSidebar } from './_components/app-sidebar';
 import { CreateRequestButton } from './_components/create-request-button';
 import { GlobalSearch } from './_components/global-search';
 import MessageNotifications from './_components/message-notifications';
+import { ModalProvider } from '@/components/modal-provider';
+import { modalRegistry } from '@/components/modals/modal-registry';
 
 export default function CrmLayout() {
   const defaultOpen = Cookies.get('sidebar_state') !== 'false';
@@ -40,7 +42,9 @@ function CrmMain() {
         </div>
       </header>
       <div className="h-[calc(100svh-4rem)] overflow-hidden">
-        <Outlet />
+        <ModalProvider modals={modalRegistry}>
+          <Outlet />
+        </ModalProvider>
       </div>
     </SidebarInset>
   );

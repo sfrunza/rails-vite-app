@@ -21,6 +21,10 @@ const router = createBrowserRouter([
     ),
     errorElement: <ErrorPage />,
   },
+  {
+    path: 'crm/requests/:id/pdf',
+    lazy: () => import('@/pages/crm/request/request-pdf-view'),
+  },
   ...authRoutes,
   crmRoutes,
   accountRoutes,

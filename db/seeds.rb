@@ -1,6 +1,6 @@
 puts "Deleting old records..."
 
-# Request.delete_all
+Request.delete_all
 Service.delete_all
 Packing.delete_all
 EntranceType.delete_all
@@ -247,52 +247,52 @@ CalendarRate.create_full_year
 
 # Create requests
 
-# customer_ids = User.where(role: "customer").pluck(:id)
-# service_ids = Service.pluck(:id)
-# packing_ids = Packing.pluck(:id)
-# move_size_ids = MoveSize.pluck(:id)
+customer_ids = User.where(role: "customer").pluck(:id)
+service_ids = Service.pluck(:id)
+packing_ids = Packing.pluck(:id)
+move_size_ids = MoveSize.pluck(:id)
 
-# puts "Creating 1000 requests..."
+puts "Creating 100 requests..."
 
-# requests_to_create = 1000
-# batch_size = 100
-# progress = 0
+requests_to_create = 100
+batch_size = 10
+progress = 0
 
-# (requests_to_create / batch_size).times do
-#   requests =
-#     batch_size.times.map do
-#       {
-#         customer_id: customer_ids.sample,
-#         status: %w[
-#           pending
-#           pending_info
-#           pending_date
-#           hold
-#           not_confirmed
-#           confirmed
-#           not_available
-#           completed
-#           spam
-#           canceled
-#           refused
-#           closed
-#           expired
-#           archived
-#         ].sample,
-#         moving_date: rand(1.month.ago..3.months.from_now),
-#         service_id: service_ids.sample,
-#         packing_id: packing_ids.sample,
-#         move_size_id: move_size_ids.sample
-#       }
-#     end
+(requests_to_create / batch_size).times do
+  requests =
+    batch_size.times.map do
+      {
+        customer_id: customer_ids.sample,
+        status: %w[
+          pending
+          pending_info
+          pending_date
+          hold
+          not_confirmed
+          confirmed
+          not_available
+          completed
+          spam
+          canceled
+          refused
+          closed
+          expired
+          archived
+        ].sample,
+        moving_date: rand(1.month.ago..3.months.from_now),
+        service_id: service_ids.sample,
+        packing_id: packing_ids.sample,
+        move_size_id: move_size_ids.sample
+      }
+    end
 
-#   Request.insert_all!(requests)
+  Request.insert_all!(requests)
 
-#   progress += batch_size
-#   puts "Created #{progress} requests..."
-# end
+  progress += batch_size
+  puts "Created #{progress} requests..."
+end
 
-# puts "Finished creating requests!"
-# puts "Total requests: #{Request.count}"
+puts "Finished creating requests!"
+puts "Total requests: #{Request.count}"
 
 puts "Seeding complete!"

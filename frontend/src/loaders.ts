@@ -3,14 +3,14 @@ import Cookies from "js-cookie";
 import { store } from "@/store";
 import { authApi } from "@/services/auth-api";
 import { settingsApi } from "./services/settings-api";
-import { servicesApi } from "@/services/services-api";
-import { ratesApi } from "@/services/rates-api";
-import { calendarRatesApi } from "@/services/calendar-rates-api";
-import { trucksApi } from "@/services/trucks-api";
-import { packingsApi } from "@/services/packings-api";
-import { extraServicesApi } from "@/services/extra-services-api";
-import { moveSizesApi } from "./services/move-sizes-api";
-import { entranceTypesApi } from "./services/entrance-types-api";
+// import { servicesApi } from "@/services/services-api";
+// import { ratesApi } from "@/services/rates-api";
+// import { calendarRatesApi } from "@/services/calendar-rates-api";
+// import { trucksApi } from "@/services/trucks-api";
+// import { packingsApi } from "@/services/packings-api";
+// import { extraServicesApi } from "@/services/extra-services-api";
+// import { moveSizesApi } from "./services/move-sizes-api";
+// import { entranceTypesApi } from "./services/entrance-types-api";
 
 
 export const settingsLoader = async () => {
@@ -43,40 +43,39 @@ export const verifyAuthLoader = async ({ request }: { request: Request }) => {
     return redirect(`/auth/login?return_to=${encodeURIComponent(returnTo)}`);
   }
 
-  if (result.data) {
-    fetchAdditionalData();
-  }
+  // if (result.data) {
+  //   fetchAdditionalData();
+  // }
 
   return null;
 };
 
-async function fetchAdditionalData() {
-  // 
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+// async function fetchAdditionalData() {
+//   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  store.dispatch(
-    servicesApi.endpoints.getServices.initiate()
-  ).unwrap();
-  store.dispatch(
-    ratesApi.endpoints.getRates.initiate()
-  ).unwrap();
-  store.dispatch(
-    calendarRatesApi.endpoints.getCalendarRates.initiate()
-  ).unwrap();
-  store.dispatch(
-    trucksApi.endpoints.getTrucks.initiate()
-  ).unwrap();
-  store.dispatch(
-    packingsApi.endpoints.getPackings.initiate()
-  ).unwrap();
-  store.dispatch(
-    extraServicesApi.endpoints.getExtraServices.initiate()
-  )
-  store.dispatch(
-    moveSizesApi.endpoints.getMoveSizes.initiate()
-  ).unwrap();
-  store.dispatch(
-    entranceTypesApi.endpoints.getEntranceTypes.initiate()
-  ).unwrap();
-}
+//   store.dispatch(
+//     servicesApi.endpoints.getServices.initiate()
+//   ).unwrap();
+//   store.dispatch(
+//     ratesApi.endpoints.getRates.initiate()
+//   ).unwrap();
+//   store.dispatch(
+//     calendarRatesApi.endpoints.getCalendarRates.initiate()
+//   ).unwrap();
+//   store.dispatch(
+//     trucksApi.endpoints.getTrucks.initiate()
+//   ).unwrap();
+//   store.dispatch(
+//     packingsApi.endpoints.getPackings.initiate()
+//   ).unwrap();
+//   store.dispatch(
+//     extraServicesApi.endpoints.getExtraServices.initiate()
+//   )
+//   store.dispatch(
+//     moveSizesApi.endpoints.getMoveSizes.initiate()
+//   ).unwrap();
+//   store.dispatch(
+//     entranceTypesApi.endpoints.getEntranceTypes.initiate()
+//   ).unwrap();
+// }
 

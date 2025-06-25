@@ -48,7 +48,7 @@ class Api::V1::UsersController < ApplicationController
 
   def user_params
     params.expect(
-      user: %i[first_name last_name email_address role active]
+      user: %i[first_name last_name email_address additional_email phone additional_phone role active]
     )
   end
 end

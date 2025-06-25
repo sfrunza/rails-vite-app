@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_06_024648) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_16_153870) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -91,6 +91,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_024648) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "mover_requests", force: :cascade do |t|
+    t.bigint "request_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["request_id", "user_id"], name: "index_mover_requests_on_request_id_and_user_id", unique: true
+    t.index ["request_id"], name: "index_mover_requests_on_request_id"
+    t.index ["user_id"], name: "index_mover_requests_on_user_id"
+  end
+
   create_table "packings", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -110,6 +120,69 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_024648) do
     t.jsonb "movers_rates", default: {"2" => {"hourly_rate" => 10000}, "3" => {"hourly_rate" => 10000}, "4" => {"hourly_rate" => 10000}, "5" => {"hourly_rate" => 10000}, "6" => {"hourly_rate" => 10000}, "7" => {"hourly_rate" => 10000}, "8" => {"hourly_rate" => 10000}, "9" => {"hourly_rate" => 10000}, "10" => {"hourly_rate" => 10000}}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "requests", force: :cascade do |t|
+    t.bigint "customer_id"
+    t.bigint "foreman_id"
+    t.bigint "service_id", null: false
+    t.bigint "packing_id", default: 1, null: false
+    t.bigint "move_size_id"
+    t.bigint "paired_request_id"
+    t.datetime "moving_date"
+    t.datetime "delivery_date_window_start"
+    t.datetime "delivery_date_window_end"
+    t.datetime "schedule_date_window_start"
+    t.datetime "schedule_date_window_end"
+    t.integer "status", default: 0
+    t.jsonb "extra_services", default: []
+    t.jsonb "details", default: {"comments" => "", "is_touched" => false, "bulky_items_question_answer" => "", "delicate_items_question_answer" => "", "disassemble_items_question_answer" => ""}, null: false
+    t.integer "start_time_window"
+    t.integer "end_time_window"
+    t.integer "start_time_window_delivery"
+    t.integer "end_time_window_delivery"
+    t.integer "start_time_window_schedule"
+    t.integer "end_time_window_schedule"
+    t.boolean "is_same_day_delivery", default: false
+    t.boolean "is_delivery_now", default: false
+    t.boolean "is_calculator_disabled", default: false
+    t.jsonb "work_time", default: {"max" => 0, "min" => 0}
+    t.jsonb "total_time", default: {"max" => 0, "min" => 0}
+    t.jsonb "total_price", default: {"max" => 0, "min" => 0}
+    t.integer "rate", default: 0
+    t.integer "travel_time", default: 0
+    t.integer "deposit", default: 10000
+    t.boolean "is_moving_from_storage", default: false
+    t.integer "min_total_time", default: 120, null: false
+    t.integer "crew_size"
+    t.integer "crew_size_delivery"
+    t.boolean "can_edit_request", default: true, null: false
+    t.text "sales_notes"
+    t.text "driver_notes"
+    t.text "customer_notes"
+    t.text "dispatch_notes"
+    t.jsonb "stops", default: []
+    t.jsonb "origin", default: {"apt" => "", "zip" => "", "city" => "", "floor" => nil, "state" => "", "street" => "", "location" => {"lat" => 0, "lng" => 0}}, null: false
+    t.jsonb "destination", default: {"apt" => "", "zip" => "", "city" => "", "floor" => nil, "state" => "", "street" => "", "location" => {"lat" => 0, "lng" => 0}}, null: false
+    t.datetime "booked_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["can_edit_request"], name: "index_requests_on_can_edit_request"
+    t.index ["customer_id"], name: "index_requests_on_customer_id"
+    t.index ["foreman_id"], name: "index_requests_on_foreman_id"
+    t.index ["is_moving_from_storage"], name: "index_requests_on_is_moving_from_storage"
+    t.index ["move_size_id"], name: "index_requests_on_move_size_id"
+    t.index ["packing_id"], name: "index_requests_on_packing_id"
+    t.index ["paired_request_id"], name: "index_requests_on_paired_request_id"
+    t.index ["service_id"], name: "index_requests_on_service_id"
+    t.index ["status"], name: "index_requests_on_status"
+  end
+
+  create_table "requests_trucks", id: false, force: :cascade do |t|
+    t.bigint "request_id", null: false
+    t.bigint "truck_id", null: false
+    t.index ["request_id", "truck_id"], name: "index_requests_trucks_on_request_id_and_truck_id"
+    t.index ["truck_id", "request_id"], name: "index_requests_trucks_on_truck_id_and_request_id"
   end
 
   create_table "services", force: :cascade do |t|
@@ -301,12 +374,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_024648) do
     t.string "additional_phone"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["email_address"], name: "index_users_on_email_address", opclass: :gin_trgm_ops, using: :gin
+    t.index ["first_name"], name: "index_users_on_first_name", opclass: :gin_trgm_ops, using: :gin
+    t.index ["last_name"], name: "index_users_on_last_name", opclass: :gin_trgm_ops, using: :gin
+    t.index ["phone"], name: "index_users_on_phone", opclass: :gin_trgm_ops, using: :gin
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "calendar_rates", "rates"
+  add_foreign_key "mover_requests", "requests"
+  add_foreign_key "mover_requests", "users"
+  add_foreign_key "requests", "move_sizes"
+  add_foreign_key "requests", "packings"
+  add_foreign_key "requests", "requests", column: "paired_request_id"
+  add_foreign_key "requests", "services"
+  add_foreign_key "requests", "users", column: "customer_id"
+  add_foreign_key "requests", "users", column: "foreman_id"
   add_foreign_key "sessions", "users"
   add_foreign_key "solid_queue_blocked_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_claimed_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade

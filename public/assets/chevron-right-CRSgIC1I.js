@@ -1,0 +1,1 @@
+import{createLucideIcon as e}from"./index-BpPvn16n.js";const t=[[`path`,{d:`m9 18 6-6-6-6`,key:`mthhwq`}]],n=e(`chevron-right`,t);export{n as ChevronRight};
