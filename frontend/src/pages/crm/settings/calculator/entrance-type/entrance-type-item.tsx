@@ -6,6 +6,7 @@ import type { CSSProperties } from 'react';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import DeleteEntranceDialog from './delete-entrance-dialog';
+import { Button } from '@/components/ui/button';
 
 interface EntranceTypeItemProps {
   item: EntranceType;
@@ -33,11 +34,15 @@ export default function EntranceTypeItem({
   };
   return (
     <div className="flex items-center gap-2" ref={setNodeRef} style={style}>
-      <GripVerticalIcon
-        className="size-5 min-w-5 cursor-grab text-muted-foreground"
+      <Button
+        size="icon"
+        variant="ghost"
+        className="cursor-grab"
         {...attributes}
         {...listeners}
-      />
+      >
+        <GripVerticalIcon />
+      </Button>
       <div
         className={cn('grid auto-cols-auto grid-flow-col gap-2', {
           'bg-background': isDragging,

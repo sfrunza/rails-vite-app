@@ -20,13 +20,13 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { Input } from '@/components/ui/input';
 import { updateField } from '@/slices/request-slice';
 import { formatCentsToDollars } from '@/lib/helpers';
 import { useModal } from '@/components/modal-provider';
+import { NumericInput } from '../numeric-input';
 
 const formSchema = z.object({
-  deposit: z.number(),
+  deposit: z.coerce.number(),
 });
 
 export type Inputs = z.infer<typeof formSchema>;
@@ -38,9 +38,10 @@ export function EditDepositModal() {
 
   const form = useForm<Inputs>({
     resolver: zodResolver(formSchema),
-    reValidateMode: 'onSubmit',
+    reValidateMode: 'onChange',
+    values: { deposit: deposit ?? 0 },
     defaultValues: {
-      deposit,
+      deposit: deposit ?? 0,
     },
   });
 
@@ -57,7 +58,7 @@ export function EditDepositModal() {
         <DialogDescription className="hidden"></DialogDescription>
       </DialogHeader>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
           <FormField
             control={form.control}
             name="deposit"
@@ -65,15 +66,13 @@ export function EditDepositModal() {
               <FormItem>
                 <FormLabel>Price</FormLabel>
                 <FormControl>
-                  <Input
+                  <NumericInput
                     {...field}
-                    pattern="[0-9]+"
-                    value={formatCentsToDollars(form.watch('deposit')) || ''}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^\d*$/.test(value)) {
-                        field.onChange(Math.round(parseFloat(value) * 100));
-                      }
+                    allowDecimals={true}
+                    max={99999999}
+                    value={formatCentsToDollars(field.value)}
+                    onChange={(value) => {
+                      field.onChange(Number.parseFloat(value) * 100);
                     }}
                   />
                 </FormControl>
@@ -81,12 +80,18 @@ export function EditDepositModal() {
               </FormItem>
             )}
           />
-          <DialogFooter>
-            <DialogClose>Cancel</DialogClose>
-            <Button type="submit">Save</Button>
-          </DialogFooter>
         </form>
       </Form>
+      <DialogFooter>
+        <DialogClose asChild>
+          <Button variant="outline" type="button">
+            Cancel
+          </Button>
+        </DialogClose>
+        <Button type="button" onClick={form.handleSubmit(onSubmit)}>
+          Apply
+        </Button>
+      </DialogFooter>
     </DialogContent>
   );
 }

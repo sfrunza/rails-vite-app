@@ -29,7 +29,7 @@ export default function PickupDateTime() {
   const currentRate = request.rate;
 
   return (
-    <div className="flex flex-wrap justify-start gap-4 p-4">
+    <div className="flex flex-wrap justify-start gap-4 p-4 bg-background">
       {/* Move Date */}
       <div className="space-y-2">
         <Label htmlFor="moving-date">Move Date</Label>

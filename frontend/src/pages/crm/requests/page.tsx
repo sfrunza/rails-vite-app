@@ -6,7 +6,7 @@ import {
   statusTextColors,
   tabOptions,
 } from '@/constants/request';
-import { cn } from '@/lib/utils';
+import useRequestsSubscription from '@/hooks/use-requests-subscription';
 import {
   useGetRequestsQuery,
   useGetStatusCountsQuery,
@@ -15,16 +15,15 @@ import { setFilter, setPage, type Filter } from '@/slices/requests-slice';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { RequestsTable } from './requests-table';
 import { TablePagination } from './table-pagination';
-import useRequestsSubscription from '@/hooks/use-requests-subscription';
 
 function RequestsPage() {
   const dispatch = useAppDispatch();
   const { filter, page } = useAppSelector((state) => state.requests);
-  const { data: statusCounts } = useGetStatusCountsQuery();
   const { data: requestsData, isFetching } = useGetRequestsQuery({
     filter,
     page,
   });
+  const { data: statusCounts } = useGetStatusCountsQuery();
 
   useRequestsSubscription();
 
@@ -43,14 +42,10 @@ function RequestsPage() {
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className={cn(
-                  'h-full w-[180px] space-x-2',
-                  `data-[state=active]:${statusTextColors[tab.value]}`,
-                  statusTextColors[tab.value]
-                )}
+                className="h-full w-[180px] space-x-2"
                 disabled={isFetching && tab.value === filter}
               >
-                <span>{tab.label}</span>
+                <span className={statusTextColors[tab.value]}>{tab.label}</span>
                 <span
                   className={`${
                     statusBgColors[tab.value]
@@ -66,7 +61,7 @@ function RequestsPage() {
       </Tabs>
       <RequestsTable requests={requestsData?.requests ?? []} />
       {requestsData && (
-        <TablePagination totalPages={requestsData.total_pages} />
+        <TablePagination totalPages={requestsData.pagination.total_pages} />
       )}
     </PageContainer>
   );

@@ -26,7 +26,7 @@ const router = createBrowserRouter([
     lazy: () => import('@/pages/crm/request/request-pdf-view'),
   },
   ...authRoutes,
-  crmRoutes,
+  ...crmRoutes,
   accountRoutes,
 ]);
 

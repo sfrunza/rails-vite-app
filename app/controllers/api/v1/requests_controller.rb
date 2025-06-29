@@ -208,9 +208,11 @@ class Api::V1::RequestsController < ApplicationController
     render json: (
       {
         requests: serialized_requests,
-        total_pages: total_pages,
-        current_page: requests.current_page,
-        total_count: requests.total_count
+        pagination: {
+          total_pages: total_pages,
+          current_page: requests.current_page,
+          total_count: requests.total_count
+        }
       }
     ), status: :ok
   end

@@ -42,16 +42,16 @@ export default function ExtraServiceItem({
       ref={setNodeRef}
       style={style}
       className={cn(
-        'grid grid-cols-[max-content_3fr_1fr_1fr_1fr] items-center gap-4 p-2',
+        'grid grid-cols-[max-content_2fr_1fr_1fr_1fr] items-center gap-2 p-2',
         {
-          'bg-background shadow-lg': isDragging,
+          'bg-background': isDragging,
         }
       )}
     >
       <Button
         size="icon"
         variant="ghost"
-        className="flex min-w-6 cursor-grab"
+        className="cursor-grab"
         {...attributes}
         {...listeners}
       >
@@ -66,6 +66,7 @@ export default function ExtraServiceItem({
         }}
       />
       <NumericInput
+        name={`extra-service-price-${id}`}
         value={(item.price / 100).toString()}
         min={0}
         max={10000}

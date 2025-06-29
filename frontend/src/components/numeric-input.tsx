@@ -84,6 +84,11 @@ export function NumericInput({
         onChange?.(newValue);
       }
     }
+
+    if (value === '') {
+      setValue('0');
+      onChange?.('0');
+    }
   };
 
   return (

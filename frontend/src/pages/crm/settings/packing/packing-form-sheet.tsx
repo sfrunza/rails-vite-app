@@ -99,7 +99,7 @@ export default function PackingFormSheet({ data }: PackingFormSheetProps) {
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetTrigger asChild>
         {isEditing ? (
-          <Button variant="outline" size="icon">
+          <Button variant="ghost" size="icon">
             <PenLineIcon />
           </Button>
         ) : (

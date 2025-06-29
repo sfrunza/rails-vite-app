@@ -4,6 +4,10 @@ import { api } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { Upload, XCircleIcon } from 'lucide-react';
 import React, { useCallback, useState } from 'react';
+import { toast } from 'sonner';
+
+const MAX_FILE_SIZE_MB = 10;
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
 interface FileUploadProps {
   requestId: number;
@@ -15,10 +19,28 @@ const FileUpload: React.FC<FileUploadProps> = ({ requestId }) => {
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      setFiles((prev) => [...prev, ...newFiles]);
+    const files = e.target.files;
+    if (!files) return;
+
+    const validFiles: File[] = [];
+    const errors: string[] = [];
+
+    Array.from(files).forEach((file) => {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        errors.push(`${file.name}: unsupported file type (${file.type})`);
+      } else if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        errors.push(`${file.name}: exceeds 10MB size limit`);
+      } else {
+        validFiles.push(file);
+      }
+    });
+
+    if (errors.length) {
+      toast.error('Upload failed:\n' + errors.join('\n'));
+      return;
     }
+
+    setFiles((prev) => [...prev, ...validFiles]);
   };
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -36,12 +58,27 @@ const FileUpload: React.FC<FileUploadProps> = ({ requestId }) => {
     setIsDragOver(false);
 
     const droppedFiles = Array.from(e.dataTransfer.files);
-    const imageFiles = droppedFiles.filter((file) =>
-      file.type.startsWith('image/')
-    );
 
-    if (imageFiles.length > 0) {
-      setFiles((prev) => [...prev, ...imageFiles]);
+    const validFiles: File[] = [];
+    const errors: string[] = [];
+
+    droppedFiles.forEach((file) => {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        errors.push(`${file.name}: unsupported file type (${file.type})`);
+      } else if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        errors.push(`${file.name}: exceeds 10MB size limit`);
+      } else {
+        validFiles.push(file);
+      }
+    });
+
+    if (errors.length) {
+      toast.error('Upload failed:\n' + errors.join('\n'));
+      return;
+    }
+
+    if (validFiles.length > 0) {
+      setFiles((prev) => [...prev, ...validFiles]);
     }
   }, []);
 
@@ -73,44 +110,43 @@ const FileUpload: React.FC<FileUploadProps> = ({ requestId }) => {
     }
   };
 
-  return (
-    <div className="space-y-6">
-      {/* Upload Area */}
-      <div
-        className={`relative border-2 border-dashed rounded-md p-6 text-center transition-all duration-200 ${
-          isDragOver
-            ? 'border-blue-400 bg-blue-50'
-            : 'hover:border-muted-foreground/50 bg-muted/40'
-        }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
-        <input
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleFileChange}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-        />
+  const UploadArea = ({ className }: { className?: string }) => (
+    <div
+      className={cn(
+        'relative border-2 border-dashed rounded-md p-4 text-center transition-all duration-200 cursor-pointer',
+        isDragOver
+          ? 'border-blue-400 bg-blue-50'
+          : 'hover:border-muted-foreground/50 bg-muted/40',
+        className
+      )}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      <input
+        type="file"
+        multiple
+        accept="image/jpeg, image/png, image/gif, image/webp"
+        onChange={handleFileChange}
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+      />
 
-        <div className="space-y-4">
-          <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center">
-            <Upload className="w-8 h-8 text-muted-foreground" />
-          </div>
-
-          <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">
-              Drop images here or click to browse
-            </h3>
-            <p className="text-foreground text-sm">
-              Supports JPG, PNG, GIF up to 10MB each
-            </p>
-          </div>
+      <div className="flex flex-col items-center justify-center h-full space-y-2">
+        <Upload className="w-6 h-6 text-muted-foreground" />
+        <div className="text-center">
+          <p className="text-sm font-medium text-foreground">
+            {files.length === 0 ? 'Add images' : 'Add more'}
+          </p>
+          <p className="text-xs text-muted-foreground">Drop or click</p>
         </div>
       </div>
+    </div>
+  );
 
-      {/* Selected Files Preview */}
+  return (
+    <div className="space-y-6">
+      <UploadArea className="p-8" />
+
       {files.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
@@ -123,6 +159,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ requestId }) => {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            {/* File previews */}
             {files.map((file, index) => (
               <ImagePreview
                 key={index}

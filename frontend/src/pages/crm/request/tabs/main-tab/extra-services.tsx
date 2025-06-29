@@ -2,6 +2,7 @@ import { useModal } from '@/components/modal-provider';
 import { Button } from '@/components/ui/button';
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
@@ -12,7 +13,7 @@ import { formatCentsToDollarsString, priceObjectToString } from '@/lib/helpers';
 import { useGetMoveSizesQuery } from '@/services/move-sizes-api';
 import { useGetPackingsQuery } from '@/services/packings-api';
 import { useAppSelector } from '@/store';
-import { HomeIcon, SquarePenIcon } from 'lucide-react';
+import { SquarePenIcon } from 'lucide-react';
 
 const packingIcons = {
   1: '',
@@ -39,26 +40,21 @@ export default function ExtraServices() {
   const currentSize = moveSizes?.find((s: any) => s.id === move_size_id);
 
   return (
-    <Card className="overflow-hidden py-0">
-      <CardHeader className="flex flex-row items-center justify-between pt-6">
-        <div className="flex items-center gap-4">
-          <div className="flex size-10 items-center justify-center rounded-full bg-muted p-2">
-            <HomeIcon className="size-5" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <CardTitle className="text-base">{currentSize?.name}</CardTitle>
-            <CardDescription>{currentSize?.description}</CardDescription>
-          </div>
-        </div>
-        <Button
-          size="sm"
-          className="right-4 top-4 mt-0"
-          variant="outline"
-          onClick={() => open('editMoveSize')}
-        >
-          <SquarePenIcon className="size-3" />
-          Edit
-        </Button>
+    <Card>
+      <CardHeader>
+        <CardTitle>{currentSize?.name}</CardTitle>
+        <CardDescription>{currentSize?.description}</CardDescription>
+        <CardAction>
+          <Button
+            size="sm"
+            className="right-4 top-4 mt-0"
+            variant="outline"
+            onClick={() => open('editMoveSize')}
+          >
+            <SquarePenIcon className="size-3" />
+            Edit
+          </Button>
+        </CardAction>
       </CardHeader>
       <CardContent className="p-0">
         <div className="text-sm font-medium [&>*:nth-child(odd)]:bg-muted">
@@ -98,7 +94,7 @@ export default function ExtraServices() {
           </div>
         </div>
       </CardContent>
-      <CardFooter className="flex items-center justify-between bg-foreground px-8 py-3 text-sm font-bold text-muted">
+      <CardFooter className="border-t">
         <p>Total price</p>
         <p>{priceObjectToString(total_price)}</p>
       </CardFooter>

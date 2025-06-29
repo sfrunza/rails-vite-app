@@ -8,8 +8,10 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router';
 import TabsNav from './tabs-nav';
 import TopNav from './top-nav';
+import { modalRegistry } from '@/components/modals/modal-registry';
+import { ModalProvider } from '@/components/modal-provider';
 
-function RequestPage() {
+export default function RequestPage() {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const { data, isLoading, isError, error } = useGetRequestByIdQuery(
@@ -55,13 +57,15 @@ function RequestPage() {
   if (!localRequest) return null;
 
   return (
-    <PageContainer className="h-full">
-      <div className="flex border-l border-r flex-col mx-auto max-w-7xl bg-muted dark:bg-background h-full">
-        <TopNav />
-        <TabsNav />
-      </div>
-    </PageContainer>
+    <ModalProvider modals={modalRegistry}>
+      <PageContainer className="h-full bg-muted dark:bg-background">
+        <div className="mx-auto min-h-screen max-w-7xl border-x overflow-hidden">
+          <TopNav />
+          <TabsNav />
+        </div>
+      </PageContainer>
+    </ModalProvider>
   );
 }
 
-export const Component = RequestPage;
+// export const Component = RequestPage;

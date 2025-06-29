@@ -3,9 +3,12 @@ class Api::V1::CalendarRatesController < ApplicationController
   allow_unauthenticated_access only: %i[index]
   before_action :set_calendar_rate, only: %i[update destroy]
 
+  CACHE_KEY = "calendar_rates".freeze
+
   # GET /calendar_rates
   def index
-    calendar_rates =
+    calendar_rates = Rails.cache.fetch(CACHE_KEY, expires_in: 1.year) do
+      Rails.logger.info "[CACHE] MISS: loading fresh calendar rates"
       CalendarRate
         .where(
           date: Date.today.beginning_of_month..11.months.from_now.end_of_month
@@ -19,6 +22,8 @@ class Api::V1::CalendarRatesController < ApplicationController
           :enable_auto_booking,
           :is_blocked
         )
+      end
+      Rails.logger.info "[CACHE] HIT: returning cached calendar rates"
 
     formatted_rates =
       calendar_rates.each_with_object({}) do |rate, hash|
@@ -40,6 +45,7 @@ class Api::V1::CalendarRatesController < ApplicationController
     @calendar_rate = CalendarRate.new(calendar_rate_params)
 
     if @calendar_rate.save
+      Rails.cache.delete(CACHE_KEY)
       render json: @calendar_rate, status: :created
     else
       render json: @calendar_rate.errors, status: :unprocessable_entity
@@ -50,6 +56,7 @@ class Api::V1::CalendarRatesController < ApplicationController
   def update
     if @calendar_rate.update(calendar_rate_params)
       authorize @calendar_rate
+      Rails.cache.delete(CACHE_KEY)
       render json: @calendar_rate
     else
       render json: @calendar_rate.errors, status: :unprocessable_entity

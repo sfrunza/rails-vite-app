@@ -30,11 +30,7 @@ export default function DeleteExtraServiceDialog({
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="icon"
-          className="hover:text-destructive"
-        >
+        <Button variant="ghost" size="icon" className="hover:text-destructive">
           <Trash2Icon />
         </Button>
       </AlertDialogTrigger>

@@ -21,7 +21,7 @@ class Setting < RailsSettings::Base
     first_or_create!
   end
 
-  def self.company_logo_url
-    company_logo.attached? ? url_for(company_logo) : nil
-  end
+  # def self.company_logo_url
+  #   company_logo.attached? ? url_for(company_logo) : nil
+  # end
 end

@@ -6,6 +6,7 @@ import type { CSSProperties } from 'react';
 import { cn } from '@/lib/utils';
 import { type MoveSize } from '@/types/move-size';
 import MoveSizeFormSheet from './move-size-form-sheet';
+import { Button } from '@/components/ui/button';
 
 interface MoveSizeItemProps {
   item: MoveSize;
@@ -31,15 +32,19 @@ export default function MoveSizeItem({ item }: MoveSizeItemProps) {
 
   return (
     <div className="flex items-center gap-2" ref={setNodeRef} style={style}>
-      <GripVerticalIcon
-        className="size-5 min-w-5 cursor-grab text-muted-foreground"
+      <Button
+        size="icon"
+        variant="ghost"
+        className="cursor-grab"
         {...attributes}
         {...listeners}
-      />
+      >
+        <GripVerticalIcon />
+      </Button>
       <div className="@container w-full">
         <div
           className={cn(
-            'grid w-full grid-cols-[max-content_1fr_max-content] @lg:grid-cols-9 border rounded-md items-center gap-4 p-4',
+            'grid w-full grid-cols-[max-content_1fr_max-content] @lg:grid-cols-9 border rounded-md items-center gap-2 p-4',
             {
               'bg-background shadow-lg': isDragging,
             }

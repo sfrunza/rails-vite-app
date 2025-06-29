@@ -23,9 +23,9 @@ export function UsersTable({ users }: { users: User[] }) {
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>
-          <TableHead>Role</TableHead>
           <TableHead>Phone</TableHead>
           <TableHead>Email</TableHead>
+          <TableHead>Role</TableHead>
           <TableHead>Status</TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
@@ -52,9 +52,9 @@ function RowData({ user }: { user: User }) {
         </Avatar>
         {`${user.first_name} ${user.last_name}`}
       </TableCell>
-      <TableCell className="capitalize">{user.role}</TableCell>
       <TableCell>{user.phone ? formatPhone(user.phone) : '-'}</TableCell>
       <TableCell>{user.email_address}</TableCell>
+      <TableCell className="capitalize">{user.role}</TableCell>
       <TableCell>
         <Badge
           className={cn(
@@ -78,7 +78,7 @@ function RowData({ user }: { user: User }) {
       </TableCell>
       <TableCell className="text-right">
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           onClick={() =>
             openSheet({

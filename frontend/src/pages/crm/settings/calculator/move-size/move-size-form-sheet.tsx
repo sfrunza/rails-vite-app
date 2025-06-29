@@ -46,7 +46,7 @@ import {
 } from '@/services/move-sizes-api';
 import type { MoveSize } from '@/types/move-size';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { PenLineIcon, PlusIcon } from 'lucide-react';
+import { PenLineIcon, PlusIcon, Trash2Icon } from 'lucide-react';
 import { MoversMatrix } from './movers-matrix';
 
 const DEFAULT_MATRIX = [
@@ -177,7 +177,7 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetTrigger asChild>
         {data ? (
-          <Button variant="outline" size="icon">
+          <Button variant="ghost" size="icon">
             <PenLineIcon />
           </Button>
         ) : (
@@ -371,16 +371,15 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
               />
             </form>
           </Form>
-        </div>
-        <SheetFooter>
-          <div>
+          <div className="mt-6">
             {data && (
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button
                     variant="outline"
-                    className="mt-2 sm:mt-0 w-full text-destructive hover:text-destructive hover:bg-destructive/10"
+                    className="hover:text-destructive text-destructive"
                   >
+                    <Trash2Icon />
                     Delete
                   </Button>
                 </AlertDialogTrigger>
@@ -419,6 +418,8 @@ export default function MoveSizeFormSheet({ data }: MoveSizeFormProps) {
               </AlertDialog>
             )}
           </div>
+        </div>
+        <SheetFooter>
           <SheetClose asChild>
             <Button type="button" variant="outline">
               Cancel

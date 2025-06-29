@@ -12,9 +12,9 @@ import Parklot from './parklot/parklot';
 
 export default function MainTab() {
   return (
-    <div className="bg-muted">
+    <>
       <Parklot />
-      <div className="divide-y shadow-md bg-background">
+      <div className="divide-y shadow-md">
         <PickupDateTime />
         <DeliveryDateTime />
         <TransitDateTime />
@@ -22,8 +22,9 @@ export default function MainTab() {
       <div>
         <StatusService />
       </div>
-      <div className="grid grid-cols-1 gap-4 px-4 xl:grid-cols-3">
-        <div className="md:col-span-2">
+      <div className="grid grid-cols-1 gap-4 px-4 lg:grid-cols-3">
+        {/* ExtraServices - shown first on mobile, last on desktop */}
+        <div className="lg:col-span-2">
           {/* Addresses */}
           <Card>
             <CardHeader>
@@ -33,7 +34,12 @@ export default function MainTab() {
               <Addresses />
             </CardContent>
           </Card>
-          {/* Notes */}
+        </div>
+        <div>
+          <ExtraServices />
+        </div>
+        {/* Notes */}
+        <div className="lg:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Notes</CardTitle>
@@ -42,7 +48,9 @@ export default function MainTab() {
               <Notes />
             </CardContent>
           </Card>
-          {/* Overview */}
+        </div>
+        {/* Overview */}
+        <div className="lg:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Overview</CardTitle>
@@ -52,11 +60,8 @@ export default function MainTab() {
             </CardContent>
           </Card>
         </div>
-        <div>
-          <ExtraServices />
-        </div>
       </div>
       <PageFooter />
-    </div>
+    </>
   );
 }

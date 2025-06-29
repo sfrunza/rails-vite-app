@@ -48,7 +48,7 @@ export default function ServiceItem({
       <Button
         size="icon"
         variant="ghost"
-        className="flex min-w-6 cursor-grab"
+        className="cursor-grab"
         {...attributes}
         {...listeners}
       >

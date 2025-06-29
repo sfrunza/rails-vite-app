@@ -46,7 +46,7 @@ export function RequestsTable({ requests }: { requests: TableRequest[] }) {
 
   return (
     <div className="min-h-[calc(100vh-200px)]">
-      <Table className="min-w-[1850px]">
+      <Table>
         <TableHeader>
           <TableRow>
             <TableHead>#</TableHead>

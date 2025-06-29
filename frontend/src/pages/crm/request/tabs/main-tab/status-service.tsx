@@ -21,7 +21,7 @@ export default function StatusService() {
   );
   return (
     <div className="z-0 px-4 py-8">
-      <div className="flex flex-col justify-between gap-4 md:flex-row">
+      <div className="flex flex-col flex-wrap justify-between gap-4 md:flex-row">
         <div className="flex flex-col items-center gap-4 md:flex-row">
           <StatusSelect status={status} dispatch={dispatch} />
           <ServiceSelect serviceId={service_id} dispatch={dispatch} />
@@ -48,7 +48,7 @@ function StatusSelect({ status, dispatch }: StatusSelectProps) {
     >
       <SelectTrigger
         className={cn(
-          'data-[size=default]:h-10 data-[size=sm]:h-10 w-full px-4 text-sm font-medium text-white md:w-[14rem]',
+          "data-[size=default]:h-10 [&_svg:not([class*='text-'])]:text-white data-[size=sm]:h-10 w-full px-4 text-sm font-medium text-white md:w-[14rem]",
           statusBgColors[status as Status]
         )}
       >

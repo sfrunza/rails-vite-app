@@ -93,7 +93,7 @@ export default function DetailsTab() {
       });
   }
   return (
-    <div className="p-4 bg-muted h-full dark:bg-background">
+    <div className="p-4">
       <Card className="max-w-2xl">
         <CardHeader>
           <CardTitle>Additional details</CardTitle>
@@ -141,8 +141,8 @@ export default function DetailsTab() {
                     <FormControl>
                       <Textarea
                         {...field}
-                        rows={8}
                         placeholder="Enter your comments..."
+                        rows={8}
                       />
                     </FormControl>
                   </FormItem>

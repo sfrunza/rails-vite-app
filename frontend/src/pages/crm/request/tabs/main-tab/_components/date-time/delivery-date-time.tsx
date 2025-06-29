@@ -18,7 +18,7 @@ export default function DeliveryDateTime() {
   if (!request) return null;
 
   return (
-    <div className="flex flex-wrap justify-start gap-4 p-4">
+    <div className="flex flex-wrap justify-start gap-4 p-4 bg-background">
       {/* Move Date */}
       <div className="space-y-2">
         <Label htmlFor="delivery-date-window">Delivery window</Label>

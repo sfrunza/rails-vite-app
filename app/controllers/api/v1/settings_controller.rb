@@ -7,7 +7,7 @@ class Api::V1::SettingsController < ApplicationController
   def index
     global_setting = GlobalSetting.instance
 
-    settings_json = Rails.cache.fetch(CACHE_KEY, expires_in: 24.hours) do
+    settings_json = Rails.cache.fetch(CACHE_KEY, expires_in: 1.year) do
       Rails.logger.info "[CACHE] MISS: loading fresh settings"
       {
         company_name: Setting.company_name,

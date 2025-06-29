@@ -151,8 +151,8 @@ export default function PhotosTab() {
       ) : (
         /* Empty State */
         <div className="text-center py-16">
-          <div className="mx-auto w-24 h-24 bg-background dark:bg-muted rounded-full flex items-center justify-center mb-4">
-            <ImageIcon className="w-12 h-12 text-muted-foreground" />
+          <div className="mx-auto size-24 bg-background dark:bg-muted rounded-full flex items-center justify-center mb-4">
+            <ImageIcon className="size-12 text-muted-foreground" />
           </div>
           <h3 className="text-lg font-medium text-muted-foreground mb-2">
             No photos yet

@@ -141,7 +141,7 @@ export default function Addresses() {
           />
         )}
         {showPairRequestsButtons && (
-          <div className="space-y-2 md:pl-6">
+          <div className="space-y-2">
             <LoadingButton
               disabled={isCreating || hasChanges}
               loading={isCreating}

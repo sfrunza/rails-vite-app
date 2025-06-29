@@ -7,9 +7,11 @@ import type { Filter } from '@/slices/requests-slice';
 
 interface GetRequestsResponse {
   requests: TableRequest[],
-  total_pages: number,
-  current_page: number,
-  total_count: number,
+  pagination: {
+    total_pages: number,
+    current_page: number,
+    total_count: number,
+  }
 }
 
 interface GetCustomerRequestsResponse {
@@ -48,6 +50,12 @@ export const requestsApi = createApi({
     getStatusCounts: builder.query<StatusCounts, void>({
       query: () => `/requests/status_counts`,
       providesTags: () => [{ type: 'StatusCounts' }],
+      // Add 1 second delay
+      // transformResponse: (response: User) => {
+      //   return new Promise((resolve) => {
+      //     setTimeout(() => resolve(response), 1000);
+      //   });
+      // },
     }),
     getRequestById: builder.query<Request, { id: number }>({
       query: ({ id }) => `/requests/${id}`,

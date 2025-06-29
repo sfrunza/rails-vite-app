@@ -2,9 +2,15 @@ class Api::V1::TrucksController < ApplicationController
   include Pundit::Authorization
   before_action :set_truck, only: %i[destroy]
 
+  CACHE_KEY = "trucks".freeze
+
   # GET /trucks
   def index
-    @trucks = Truck.select(:id, :name, :is_active).order(:id)
+    @trucks = Rails.cache.fetch(CACHE_KEY, expires_in: 1.year) do
+      Rails.logger.info "[CACHE] MISS: loading fresh trucks"
+      Truck.select(:id, :name, :is_active).order(:id)
+    end
+    Rails.logger.info "[CACHE] HIT: returning cached trucks"
     render json: @trucks
   end
 
@@ -13,6 +19,7 @@ class Api::V1::TrucksController < ApplicationController
     @truck = Truck.new(truck_params)
     authorize @truck
     if @truck.save
+      Rails.cache.delete(CACHE_KEY)
       render json: @truck, status: :created
     else
       render json: @truck.errors, status: :unprocessable_entity
@@ -46,6 +53,7 @@ class Api::V1::TrucksController < ApplicationController
         return
       end
     end
+    Rails.cache.delete(CACHE_KEY)
     render json: @trucks, status: :accepted
   end
 
@@ -53,6 +61,7 @@ class Api::V1::TrucksController < ApplicationController
   def destroy
     authorize @truck
     @truck.destroy!
+    Rails.cache.delete(CACHE_KEY)
   end
 
   private

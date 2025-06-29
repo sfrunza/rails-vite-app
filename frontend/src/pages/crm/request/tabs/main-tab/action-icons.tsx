@@ -48,7 +48,7 @@ export default function ActionIcons() {
           <TooltipTrigger asChild>
             <Button
               size="icon"
-              variant="ghost"
+              variant="outline"
               className="size-11 rounded-full bg-background text-muted-foreground shadow-md [&_svg]:size-5"
             >
               <MailsIcon />
@@ -64,7 +64,7 @@ export default function ActionIcons() {
             <Button
               asChild
               size="icon"
-              variant="ghost"
+              variant="outline"
               className="size-11 rounded-full bg-background text-muted-foreground shadow-md [&_svg]:size-5"
             >
               <a href={`/account/requests/${requestId}`} target="_blank">
@@ -83,7 +83,7 @@ export default function ActionIcons() {
               disabled={isCloning}
               loading={isCloning}
               size="icon"
-              variant="ghost"
+              variant="outline"
               className="size-11 rounded-full bg-background text-muted-foreground shadow-md [&_svg]:size-5"
               onClick={() => {
                 if (requestId) {
@@ -103,7 +103,7 @@ export default function ActionIcons() {
           <TooltipTrigger asChild>
             <Button
               size="icon"
-              variant="ghost"
+              variant="outline"
               className="size-11 rounded-full bg-background text-muted-foreground shadow-md [&_svg]:size-5"
               onClick={() => {
                 if (requestId) {
@@ -123,7 +123,7 @@ export default function ActionIcons() {
             <TooltipTrigger asChild>
               <Button
                 size="icon"
-                variant="ghost"
+                variant="outline"
                 className="size-11 rounded-full bg-background text-muted-foreground shadow-md [&_svg]:size-5"
                 onClick={() => {
                   if (requestId) {
