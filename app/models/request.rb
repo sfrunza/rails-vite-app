@@ -99,8 +99,13 @@ class Request < ApplicationRecord
     serialized_request = RequestSerializer.new(self)
     ActionCable.server.broadcast("request_#{id}", serialized_request.as_json)
 
-    serialized_request_table = RequestTableSerializer.new(self)
-    ActionCable.server.broadcast("requests", serialized_request_table.as_json)
+    table_requests = ApplicationController.renderer.render(
+      template: "api/v1/requests/table",
+      formats: [ :json ],
+      assigns: { request: self }
+    )
+
+    ActionCable.server.broadcast("requests", JSON.parse(table_requests))
   end
 
   def check_if_details_touched

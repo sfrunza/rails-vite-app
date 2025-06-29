@@ -1,4 +1,4 @@
-json.requests @requests do |request|
+json.array! @requests do |request|
   json.id request.id
   json.moving_date request.moving_date
   json.service_id request.service_id
@@ -32,10 +32,4 @@ json.requests @requests do |request|
   else
     json.customer nil
   end
-end
-
-json.pagination do
-  json.total_pages @total_pages
-  json.current_page @requests.current_page
-  json.total_count @requests.total_count
 end

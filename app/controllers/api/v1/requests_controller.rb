@@ -199,9 +199,20 @@ class Api::V1::RequestsController < ApplicationController
   end
 
   def render_admin_requests(requests, total_pages)
-    @requests = requests
-    @total_pages = total_pages
-    render :table, formats: :json, status: :ok
+    rendered_requests = ApplicationController.renderer.render(
+      template: "api/v1/requests/table",
+      formats: [ :json ],
+      assigns: { requests: requests }
+    )
+
+    render json: {
+      requests: JSON.parse(rendered_requests),
+      pagination: {
+        total_pages: total_pages,
+        current_page: requests.current_page,
+        total_count: requests.total_count
+      }
+    }, status: :ok
   end
 
   def render_customer_requests(requests)
