@@ -59,7 +59,7 @@ export function RequestsTable({ requests }: { requests: TableRequest[] }) {
             <TableHead>Size of move</TableHead>
             <TableHead>Crew</TableHead>
             <TableHead>Created at</TableHead>
-            <TableHead>Updated at</TableHead>
+            <TableHead>Booked at</TableHead>
             <TableHead className="text-right">Est. Quote</TableHead>
           </TableRow>
         </TableHeader>
@@ -174,7 +174,9 @@ export function RequestsTable({ requests }: { requests: TableRequest[] }) {
                   )}
                 </TableCell>
                 <TableCell>{format(request.created_at, 'P')}</TableCell>
-                <TableCell>{format(request.updated_at, 'P')}</TableCell>
+                <TableCell>
+                  {request.booked_at ? format(request.booked_at, 'P') : ''}
+                </TableCell>
                 <TableCell className="text-right">
                   {priceObjectToString(request.total_price)}
                 </TableCell>

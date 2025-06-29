@@ -133,7 +133,7 @@ export type TableRequest = {
     phone: string;
   };
   created_at: string;
-  updated_at: string;
+  booked_at: string | null;
   total_price: {
     max: number;
     min: number;

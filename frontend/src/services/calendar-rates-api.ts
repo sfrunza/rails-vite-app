@@ -2,6 +2,10 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import type { CalendarRate, CalendarRateMap } from "@/types/rate";
 import { baseQuery } from "./base-service";
 
+type CalendarRatesResponse = {
+  calendar_rates: CalendarRateMap;
+}
+
 export const calendarRatesApi = createApi({
   reducerPath: "calendarRatesApi",
   baseQuery: baseQuery,
@@ -17,6 +21,9 @@ export const calendarRatesApi = createApi({
           ]
         }
         return [{ type: 'CalendarRate', id: 'LIST' }]
+      },
+      transformResponse: (response: CalendarRatesResponse) => {
+        return response.calendar_rates;
       },
     }),
     updateCalendarRate: builder.mutation<CalendarRate, { id: number, newData: Partial<CalendarRate> }>({
